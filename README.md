@@ -7,7 +7,7 @@
 
 # 博客系统需求列表
 
-1,搭建一个较为简洁的静态博客网页<br>
+1,搭建一个较为简洁的静态博客网页 √ <br>
 2，搭建框架springboot+springJPA+任一模板引擎,集成bootstrap，后台网页采用adminlte3<br>
 3,加入css动效修饰网页切换，banner切换<br>
 4，加入js动画出现在首页<br>
