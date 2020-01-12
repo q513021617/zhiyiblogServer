@@ -14,4 +14,31 @@ public class AdminIndexController {
         return "admin/adminIndex";
     }
 
+    @RequestMapping("/admin/admin_articleManage")
+    public String articleManage(Map<String,Object> map){
+
+        return "admin/articleManage";
+    }
+
+    @RequestMapping("/admin/admin_photomanage")
+    public String photomanage(Map<String,Object> map){
+
+        return "admin/photomanage";
+    }
+
+    @RequestMapping("/admin/admin_seomanage")
+    public String seomanage(Map<String,Object> map){
+
+        return "admin/seomanage";
+    }
+    @RequestMapping("/admin/admin_skilltree")
+    public String skilltree(Map<String,Object> map){
+
+        return "admin/skilltree";
+    }
+    @RequestMapping("/admin/admin_usermanager")
+    public String usermanager(Map<String,Object> map){
+
+        return "admin/usermanager";
+    }
 }
