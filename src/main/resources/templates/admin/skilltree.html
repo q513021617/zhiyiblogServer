@@ -9,7 +9,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="dist/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
@@ -25,7 +25,7 @@
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="dist/css/fontgooglecss.css" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -221,8 +221,100 @@
           </div>
      
           <div class="row">
-        <p>这里使用echart.js 展示树 </p>
-     </div>
+            <div class="card" style="width: 100%;height: auto;">
+              <div class="card-header">
+                <h1 class="card-title" style="font-weight: bold;">技能列表</h1>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>                  
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>技能名</th>
+                      <th style="width:30%">父节点</th>
+                      <th style="width:30%">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr>
+                      <td>1.</td>
+                      <td>php</td>
+                      <td>
+                        编程语言
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
+                        <button type="submit" class="btn btn-info">查看</button>
+                      </td>
+                    </tr>
+                  <tr>
+                      <td>2.</td>
+                      <td>Java</td>
+                      <td>
+                        编程语言
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
+                        <button type="submit" class="btn btn-info">查看</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3.</td>
+                      <td>JavaScript</td>
+                      <td>
+                        编程语言
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
+                        <button type="submit" class="btn btn-info">查看</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>4.</td>
+                      <td>python</td>
+                      <td>
+                        编程语言
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
+                        <button type="submit" class="btn btn-info">查看</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>5.</td>
+                      <td>go</td>
+                      <td>
+                        编程语言
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
+                        <button type="submit" class="btn btn-info">查看</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">«</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">»</a></li>
+                </ul>
+              </div>
+            </div>
+  
+            </div>
+            
 
       </div><!-- /.container-fluid -->
     </section>
@@ -244,12 +336,13 @@
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 
+
+
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
+
 <!-- JQVMap -->
 <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
 <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
@@ -266,9 +359,12 @@
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+<!-- Echarts.js -->
+<script src="dist/js/echarts.min.js"></script>
+
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
+
 </body>
 </html>

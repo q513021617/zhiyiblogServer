@@ -9,7 +9,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="dist/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
@@ -26,6 +26,15 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+<style>
+
+.blockstyle{
+  width:60px;height:60px;border-color: red;border-width: medium;border-style: solid;display: inline-block;position: absolute;top:30%;left: 25%;
+  text-align: center;line-height: 50px;
+}
+</style>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -219,15 +228,160 @@
         </div>
         <!-- /.row -->
         <!-- Main row -->
-        <div class="row">
-          <h1>图片列表</h1>
-          
-          </div>
      
+     
+          <section class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card card-primary">
+                    <div class="card-header">
+                      <h3 class="card-title">图片列表</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <div class="row mt-4">
+                        <div class="col-sm-4">
+                          <div class="position-relative p-3 bg-gray " 
+                          onmouseover="mousehoverdiv(this)"
+                          onmouseout="mouseoutdiv(this)"
+                          style="height: 180px;background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg');background-size: 100% 100%;">
+                            <div class="ribbon-wrapper">
+                              <div class="ribbon bg-primary">
+                                Ribbon
+                              </div>
+                            </div>
+                            
+                           
+
+                              <div class="blockstyle" style="display: none;" onclick="queryimg('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg')"><i class="fas fa-search-plus"></i>查看</div>
+                              <div class="blockstyle" style="left: 55%;display: none;" onclick="delimg(1)"><i class="fas fa-trash-alt"></i>删除</div>
+                           
+                           
+                            
+                            
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="position-relative p-3 bg-gray" 
+                          onmouseover="mousehoverdiv(this)"
+                          onmouseout="mouseoutdiv(this)"
+                          style="height: 180px;background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg');background-size: 100% 100%;">
+                            <div class="ribbon-wrapper ribbon-lg">
+                              <div class="ribbon bg-info">
+                                Ribbon Large
+                              </div>
+                            </div>
+                            <div class="blockstyle" style="display: none;"><i class="fas fa-search-plus"></i>查看</div>
+                            <div class="blockstyle" style="left: 55%;display: none;"><i class="fas fa-trash-alt"></i>删除</div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-sm-4">
+                          <div class="position-relative p-3 bg-gray" 
+                          onmouseover="mousehoverdiv(this)"
+                          onmouseout="mouseoutdiv(this)"
+                          style="height: 180px;background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg');background-size: 100% 100%;">
+                            <div class="ribbon-wrapper ribbon-xl">
+                              <div class="ribbon bg-secondary">
+                                Ribbon Extra Large
+                              </div>
+                            </div>
+                            <div class="blockstyle" style="display: none;"><i class="fas fa-search-plus"></i>查看</div>
+                            <div class="blockstyle" style="left: 55%;display: none;"><i class="fas fa-trash-alt"></i>删除</div>
+
+                          </div>
+                        </div>
+              
+                        
+
+                      </div>
+
+                    <div class="row mt-4">
+
+                      <div class="col-sm-4">
+                        <div class="position-relative p-3 bg-gray" 
+                        onmouseover="mousehoverdiv(this)"
+                        onmouseout="mouseoutdiv(this)"
+                        style="height: 180px;background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg');background-size: 100% 100%;">
+                          <div class="ribbon-wrapper ribbon-xl">
+                            <div class="ribbon bg-secondary">
+                              Ribbon Extra Large
+                            </div>
+                          </div>
+
+                          <div class="blockstyle" style="display: none;"><i class="fas fa-search-plus"></i>查看</div>
+                              <div class="blockstyle" style="left: 55%;display: none;"><i class="fas fa-trash-alt"></i>删除</div>
+
+                        </div>
+                      </div>
+
+                      <div class="col-sm-4">
+                        <div class="position-relative p-3 bg-gray" 
+                        onmouseover="mousehoverdiv(this)"
+                        onmouseout="mouseoutdiv(this)"
+                        style="height: 180px;background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg');background-size: 100% 100%;">
+                          <div class="ribbon-wrapper ribbon-xl">
+                            <div class="ribbon bg-secondary">
+                              Ribbon Extra Large
+                            </div>
+                          </div>
+                          <div class="blockstyle" style="display: none;"><i class="fas fa-search-plus"></i>查看</div>
+                          <div class="blockstyle" style="left: 55%;display: none;"><i class="fas fa-trash-alt"></i>删除</div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="col-sm-4">
+                        <div class="position-relative p-3 bg-gray" 
+                        onmouseover="mousehoverdiv(this)"
+                        onmouseout="mouseoutdiv(this)"
+                        style="height: 180px;background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(31).jpg');background-size: 100% 100%;">
+                          <div class="ribbon-wrapper ribbon-xl">
+                            <div class="ribbon bg-secondary">
+                              Ribbon Extra Large
+                            </div>
+                          </div>
+
+                          <div class="blockstyle" style="display: none;"><i class="fas fa-search-plus"></i>查看</div>
+                          <div class="blockstyle" style="left: 55%;display: none;"><i class="fas fa-trash-alt"></i>删除</div>
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+          </section>
+
+          <div id="ShowImage_Form" class="modal hide" style="width: 50em;height:50em;left: 10em;" >         
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button" style="color:black;background-color: white;"></button>
+            </div>
+              <div class="modal-body">
+               <div id="img_show" >
+               </div>
+           </div>
+        </div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
+
+  
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2018-2020 <a href="#">zhiyigo.cn</a>.</strong>
@@ -248,8 +402,7 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
+
 <!-- JQVMap -->
 <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
 <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
@@ -266,9 +419,44 @@
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
+<script>
+
+ function mousehoverdiv(e){
+      
+      var currentEle=e;
+   
+    
+      $(currentEle).find('.blockstyle').css("display","inline-block");
+
+  }
+
+  function mouseoutdiv(e){
+      
+      var currentEle=e;
+    
+    $(currentEle).find(".blockstyle").css("display","none");
+    
+
+  }
+
+  function queryimg(url){
+
+    $("#ShowImage_Form").find("#img_show").html("<image src='"+url+"' class='carousel-inner img-responsive img-rounded' />");
+    $("#ShowImage_Form").modal();
+
+  }
+function delimg(id){
+
+  alert(id);
+}
+  </script>
+
+
+
+
 </body>
 </html>

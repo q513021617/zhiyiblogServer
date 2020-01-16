@@ -7,25 +7,33 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="dist/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
-  <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
+  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
-  <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.css">
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="dist/css/fontgooglecss.css" rel="stylesheet">
+<style>
+@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}
+.chartjs-render-monitor{animation:chartjs-render-animation 1ms}
+.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}
+.chartjs-size-monitor-expand > div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}
+
+.chartjs-size-monitor-shrink > div{position:absolute;width:200%;height:200%;left:0;top:0}
+</style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -65,7 +73,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">后台管理</span>
@@ -216,7 +224,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>53</h3>
 
                 <p>登录人数</p>
               </div>
@@ -261,20 +269,125 @@
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
-          <h1>文章访问量</h1>
-          
-          </div>
 
-          <div class="row">
-            <h1>浏览器使用率</h1>
-
-     
-          </div>
-
-            <div class="row">
-              <h1>最后注册用户</h1>
-              
+        
+          <div class="col-md-6">
+            <h1>文章访问量</h1>
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">各类型文章访问量对比</h3>
+  
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                </div>
               </div>
+              <div class="card-body">
+                <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 100%;" width="100%" height="250" class="chartjs-render-monitor"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <h1>浏览器使用占比</h1>
+              <div class="card card-danger">
+                <div class="card-header">
+                  <h3 class="card-title">浏览器使用率</h3>
+      
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="browerChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 100%;" width="100%" height="250" class="chartjs-render-monitor"></canvas>
+                </div>
+                <!-- /.card-body -->
+              </div>
+  
+          </div>
+
+
+        </div>
+        
+
+              <div class="row">
+                <div class="card" style="width: 100%;height: auto;">
+                  <div class="card-header">
+                    <h1 class="card-title" style="font-weight: bold;">最后注册用户</h1>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <table class="table table-bordered">
+                      <thead>                  
+                        <tr>
+                          <th style="width: 10px">#</th>
+                          <th>用户名</th>
+                          <th style="width:30%">身份</th>
+                          <th style="width:30%">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                          <td>1.</td>
+                          <td>小明</td>
+                          <td>
+                            管理员
+                          </td>
+                          <td>
+                            <button type="submit" class="btn btn-primary">封号</button>
+                            <button type="submit" class="btn btn-danger">删除账号</button>
+                            <button type="submit" class="btn btn-info">查看详细信息</button>
+                          </td>
+                        </tr>
+                      <tr>
+                          <td>2.</td>
+                          <td>小红</td>
+                          <td>
+                           游客
+                          </td>
+                          <td>
+                            <button type="submit" class="btn btn-primary">封号</button>
+                            <button type="submit" class="btn btn-danger">删除账号</button>
+                            <button type="submit" class="btn btn-info">查看详细信息</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>3.</td>
+                          <td>小王</td>
+                          <td>
+                            版主
+                          </td>
+                          <td>
+                            <button type="submit" class="btn btn-primary">封号</button>
+                            <button type="submit" class="btn btn-danger">删除账号</button>
+                            <button type="submit" class="btn btn-info">查看详细信息</button>
+                          </td>
+                        </tr>
+            
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                      <li class="page-item"><a class="page-link" href="#">«</a></li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">»</a></li>
+                    </ul>
+                  </div>
+                </div>
+      
+                </div>
+      
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
@@ -300,7 +413,7 @@
 <!-- ChartJS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
+<!-- <script src="plugins/sparklines/sparkline.js"></script> -->
 <!-- JQVMap -->
 <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
 <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
@@ -318,8 +431,99 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+<!-- <script src="dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+ 
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var browerChartCanvas = $('#browerChart').get(0).getContext('2d');
+    var browerChartData = {
+      labels: [
+          'Chrome', 
+          'IE',
+          'FireFox', 
+          'Safari', 
+          'Opera', 
+          'Navigator', 
+      ],
+      datasets: [
+        {
+          data: [700,500,400,600,300,100],
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }
+      ]
+    }
+    var browerChartOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    // 如果没有这一操作将不会显示图表信息
+    var browerChart = new Chart(browerChartCanvas, {
+      type: 'doughnut',
+      data: browerChartData,
+      options: browerChartOptions      
+    })
+
+
+// 条状图表
+
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = {
+      labels  : ['java', 'js', 'css', 'C#', 'unity', 'hadoop', 'hive'],
+      datasets: [
+        {
+          label               : '总数据',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        }
+        
+      ]
+    }
+
+    var barChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      datasetFill             : false
+    }
+
+    var barChart = new Chart(barChartCanvas, {
+      type: 'bar', 
+      data: barChartData,
+      options: barChartOptions
+    })
+
+
+
+
+
+
+  });
+
+
+
+
+
+    
+</script>
 </body>
 </html>
