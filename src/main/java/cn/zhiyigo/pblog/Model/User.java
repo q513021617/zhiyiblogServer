@@ -24,4 +24,7 @@ public class User {
     @Column(name = "email")
     String email;
 
+    @Column(name = "role")
+    Integer role;
+
 }

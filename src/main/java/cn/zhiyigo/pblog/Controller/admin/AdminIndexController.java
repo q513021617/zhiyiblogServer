@@ -36,9 +36,12 @@ public class AdminIndexController {
 
         return "admin/skilltree";
     }
+
     @RequestMapping("/admin/admin_usermanager")
     public String usermanager(Map<String,Object> map){
 
         return "admin/usermanager";
     }
+
+
 }
