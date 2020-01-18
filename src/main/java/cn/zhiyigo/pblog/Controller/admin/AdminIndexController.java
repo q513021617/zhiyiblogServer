@@ -11,6 +11,8 @@ public class AdminIndexController {
     @RequestMapping("/admin/")
     public String index(Map<String,Object> map){
 
+        map.put("userlist","");
+
         return "admin/adminIndex";
     }
 
