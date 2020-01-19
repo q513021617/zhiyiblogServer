@@ -54,7 +54,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>53</h3>
 
                 <p>登录人数</p>
               </div>
@@ -85,78 +85,46 @@
         </div>
         <!-- /.row -->
         <!-- Main row -->
-     
-          <div class="row">
-            <div class="card" style="width: 100%;height: auto;">
-              <div class="card-header">
-                <h1 class="card-title" style="font-weight: bold;">用户列表</h1>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>                  
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>用户名</th>
-                      <th style="width:30%">身份</th>
-                      <th style="width:30%">操作</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+        <div class="row">
+          <div class="card" style="width: 100%;height: auto;">
+            <div class="card-header">
+              <h1 class="card-title" style="font-weight: bold;">最后注册用户</h1>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="userlist" class="table table-bordered">
+                <thead>
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>用户名</th>
+                  <th style="width:30%">身份</th>
+                  <th style="width:30%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                    <tr>
-                      <td>1.</td>
-                      <td>小明</td>
-                      <td>
-                        管理员
-                      </td>
-                      <td>
-                        <button type="submit" class="btn btn-primary">封号</button>
-                        <button type="submit" class="btn btn-danger">删除账号</button>
-                        <button type="submit" class="btn btn-info">查看详细信息</button>
-                      </td>
-                    </tr>
-                  <tr>
-                      <td>2.</td>
-                      <td>小红</td>
-                      <td>
-                       游客
-                      </td>
-                      <td>
-                        <button type="submit" class="btn btn-primary">封号</button>
-                        <button type="submit" class="btn btn-danger">删除账号</button>
-                        <button type="submit" class="btn btn-info">查看详细信息</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3.</td>
-                      <td>小王</td>
-                      <td>
-                        版主
-                      </td>
-                      <td>
-                        <button type="submit" class="btn btn-primary">封号</button>
-                        <button type="submit" class="btn btn-danger">删除账号</button>
-                        <button type="submit" class="btn btn-info">查看详细信息</button>
-                      </td>
-                    </tr>
-        
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">«</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
-              </div>
+                <tr>
+                  <td colspan="4">暂时无用户信息</td>
+                </tr>
+
+
+                </tbody>
+              </table>
             </div>
-  
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item"><a class="page-link" href="#">«</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">»</a></li>
+              </ul>
             </div>
+          </div>
+
+        </div>
+
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
@@ -171,7 +139,109 @@
 
 </div>
 <script>
+
   $("ul#navul li:nth-of-type(2) a").addClass("active");
+  function User() {
+    this.id=0;
+    this.username="";
+    this.password='';
+    this.sex=1;
+    this.email="";
+    this.role=1;
+  }
+
+  function queryAllUser() {
+    $.get("/admin/user/",function (data) {
+      let content="";
+
+      data.forEach( item => {
+
+        content=content+"<tr>\n" +
+                "                          <td>"+item.id+".</td>" +
+                "                          <td>"+item.username+"</td>" +
+                "                          <td>" +
+                "                           "+item.role+"" +
+                "                          </td>" +
+                "                          <td>" +
+                "                            <button type=\"submit\" class=\"btn btn-primary\" onclick='lockAccount("+item.id+")'>封号</button>" +
+                "                            <button type=\"submit\" class=\"btn btn-danger\" data-toggle=\"modal\"  data-target=\"#infomodal\" onclick='delAccount("+item.id+")'>删除账号</button>" +
+                "                            <button type=\"submit\" class=\"btn btn-info\"  data-toggle=\"modal\"  data-target=\"#infomodal\" onclick='queryUser("+item.id+")'>查看详细信息</button>" +
+                "                          </td>" +
+                "                        </tr>";
+
+
+      });
+      if(data.length>0){
+        $("#userlist tbody").html(content);
+      }
+
+    });
+  }
+  queryAllUser();
+  function lockAccount(id) {
+    console.log("封号 "+id);
+    queryAllUser();
+  }
+
+
+  function delAccount(id) {
+    console.log("删除 "+id);
+    let user=new User();
+    user.id=id;
+
+    showSampleInfo("提示:","是否删除该用户信息?","确定",function () {
+
+      $("#infomodal .modal-footer #save").click(function () {
+        $.ajax({
+          url: "/admin/user/",
+          type: 'DELETE',
+          data:user,
+          success: function(result) {
+            console.log("删除: "+result);
+            showalert("提示:","删除用户成功!");
+
+            setTimeout(hidealert,1000);
+            queryAllUser();
+          }
+        });
+
+      });
+    });
+
+
+
+  }
+
+  function userdata(username,password,sex,email,role) {
+    return  "用户名:<input width='50%' type=\"text\" name='username'  class=\"form-control\" value='" +username +"' style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
+            +"<br/>" + "密码:<input  type=\"text\" name='password' class=\"form-control\" value='" +password +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
+            +"<br/>"  + "性别:<input type=\"text\" name='sex' class=\"form-control\" value='" + (sex==1?'男':'女') +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
+            +"<br/>" + "email:<input  type=\"text\" name='email' class=\"form-control\" value='" +email +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
+            +"<br/>"  + "角色:<input  type=\"text\" name='role' class=\"form-control\" value='" +role +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>";
+  }
+
+  function queryUser(id) {
+    $.get("/admin/user/"+id,function (data) {
+      console.log(data);
+      showInfo(data.username+"用户信息:", userdata(data.username,data.password,data.sex,data.email,data.role),function () {
+        $("#infomodal .modal-footer #save").click( function () {
+          let data=new User();
+          data.id=id;
+          console.log("showInfo----");
+          data.username = $("#infomodal .modal-body input[name='username']").val();
+          data.password = $("#infomodal .modal-body input[name='password']").val();
+          data.sex = $("#infomodal .modal-body input[name='sex']").val()=='男'?1:2;
+          data.email = $("#infomodal .modal-body input[name='email']").val();
+          data.role = $("#infomodal .modal-body input[name='role']").val();
+          console.log(data);
+          updateData(data,"/admin/user/","提示:","用户数据更新完毕");
+
+        });
+      });
+    });
+
+  }
+
 </script>
 </body>
 </html>

@@ -33,6 +33,80 @@
     <!-- <script src="dist/js/pages/dashboard.js"></script> -->
     <!-- AdminLTE for demo purposes -->
     <script src="/dist/js/demo.js"></script>
+    <script>
+        Date.prototype.Format = function (fmt) {
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "H+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
 
+        function getLocalTime(nS) {
+
+            return nS.Format("yyyy-MM-dd HH:mm:ss");
+        }
+        function showSampleInfo(title,content,oktext,callback) {
+
+            $("#infomodal h4").html(title);
+            $("#infomodal .modal-body").html(content);
+            $("#infomodal .modal-footer #save").html(oktext);
+
+            $("#infomodal .modal-footer #save").attr("data-dismiss","modal");
+            typeof callback==="function";
+            callback();
+        }
+
+        function showInfo(title,content,callback) {
+
+            $("#infomodal h4").html(title);
+            $("#infomodal .modal-body").html(content);
+
+            typeof callback==="function";
+            callback();
+
+        }
+
+
+        function updateData(data,url,alertTitle,alertContent) {
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data:data,
+                success: function(result) {
+                    console.log("更新: "+result);
+                    //alertTitle  alertContent
+                    // showalert("提示:","更新用户成功!");
+                    showalert(alertTitle,alertContent);
+                    setTimeout(hidealert,1000);
+
+                }
+            });
+
+        }
+
+
+        function showalert(title,info) {
+
+            $("#toastsContainerTopRight .toast-header strong").html(title);
+            $("#toastsContainerTopRight .toast-header small").html("");
+            $("#toastsContainerTopRight .toast-body").html(info);
+            $("#toastsContainerTopRight div").addClass("show");
+        }
+
+        function hidealert() {
+
+            $("#toastsContainerTopRight div").removeClass("show");
+        }
+    </script>
 </div>
 </html>
