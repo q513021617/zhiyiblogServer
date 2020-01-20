@@ -19,17 +19,21 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">信息框</h4>
+                    <h4 class="modal-title">{{inputtitle}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
+                    <p v-if="!isinputlist">{{info}}</p>
+
+                   <div v-for="item in infolist "  v-if="isinputlist">
+                       {{item.tag}}<input width='50%' type="text" :name="item.name"  class="form-control" :value="item.value"  style=" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;"/><br/>
+                   </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" id="save" class="btn btn-primary toastsDefaultSuccess">保存</button>
+                    <button type="button" id="save" class="btn btn-primary toastsDefaultSuccess">{{oktext}}</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -41,5 +45,49 @@
         <strong>Copyright &copy; 2018-2020 <a href="#">zhiyigo.cn</a>.</strong>
         All rights reserved
     </footer>
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+
+        var infomodalElement=new Vue({
+            el: '#infomodal',
+            data: {
+                inputtitle:'信息框',
+                isinputlist:false,
+                info:"",
+                infolist:[],
+                oktext:"保存"
+            }, methods: {
+
+                showInfo:function (title,infolist,isinputlist,oktext,info,callback) {
+                    console.log("infomodalElement ");
+                    this.inputtitle=title;
+                    this.infolist=infolist;
+                    this.oktext=oktext;
+                    this.info=info;
+                    this.isinputlist=isinputlist;
+
+                    typeof callback==="function";
+
+                    $("#infomodal .modal-footer #save").click(function () {
+                        console.log("infomodalElement save");
+                        callback();
+                    });
+
+        },
+
+        // showInfo:function (title,content,callback) {
+        //
+        //     $("#infomodal h4").html(title);
+        //     $("#infomodal .modal-body").html(content);
+        //
+        //     typeof callback==="function";
+        //     callback();
+        //
+        // }
+            }
+        });
+
+    </script>
 </div>
 </html>

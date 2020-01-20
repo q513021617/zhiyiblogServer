@@ -10,16 +10,23 @@
     display: inline-block;position: absolute;top:30%;left: 25%;
     text-align: center;
   }
+  .show{
+    display: inline-block;
+  }
+  .hide{
+    display: none;
+  }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+
 <div class="wrapper">
 
   <div id="commonnav" th:replace="admin/adminnav :: adminnav"  >
 
   </div>
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="content-main">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -50,7 +57,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{photoCount}}</h3>
 
                 <p>图片数</p>
               </div>
@@ -94,9 +101,19 @@
                     <button style="position: relative;left: 20px;width: 150px;"class="btn btn-danger"  data-toggle="modal"  data-target="#infomodal" onclick="addImg()">增加图片</button>
                     <div class="card-body">
                       <div class="row">
-                        <div class="col-md-12">
-                        暂无图片信息!
-                        </div>
+
+
+                          <div class="col-md-4" style="margin-top: 10px;" v-for="(item,index) in photodatalist">
+                            <!--background-image: url({{item.}})-->
+                            <div class="position-relative p-3 bg-gray"  @mouseover="mousehoverdiv(index)"   @mouseout="mouseoutdiv(index)" :style="'height: 180px;background-size: 100% 100%;backgroundImage:url(' + item.srcUrl + ')' ">
+                      <div class="ribbon-wrapper ribbon-xl">
+                    <div class="ribbon bg-secondary">     {{item.photoName}}    </div>
+                     </div>
+                              <!--<i class="fas fa-trash-alt" style="display: none;"></i>-->
+                     <button  @click="queryimg(item.srcUrl)"   class="blockstyle btn btn-danger"  :class="[ind===index? 'show':'hide']"><i class="fas fa-search-plus" ></i>查看</button>
+                    <button @click="delimg(item.id)" style="left: 55%;z-index: 999;" :class="[ind===index? 'show':'hide']" class="blockstyle btn btn-danger" data-toggle="modal"  data-target="#infomodal">删除</button>
+                  </div>  </div>
+
 
 
 
@@ -118,19 +135,25 @@
             <!-- /.container-fluid -->
           </section>
 
-          <div id="ShowImage_Form" class="modal hide" style="width: 50em;height:50em;left: 10em;" >         
-            <div class="modal-header">
-                <button data-dismiss="modal" class="close" type="button" style="color:black;background-color: white;"></button>
-            </div>
-              <div class="modal-body">
-               <div id="img_show" >
-               </div>
-           </div>
-        </div>
+
+
+
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+    <div id="ShowImage_Form" class="modal hide" style="width: 50em;height:50em;left: 10em;" >
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button" style="color:black;background-color: white;"></button>
+      </div>
+      <div class="modal-body">
+        <div id="img_show" >
+          <img :src="showimgurl"/>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 
   
   <!-- /.content-wrapper -->
@@ -143,129 +166,134 @@
 <div id="commonjs" th:replace="admin/admincommonjs::common_js(~{::script})">
 </div>
 
-
 <script>
-  $("ul#navul li:nth-of-type(5) a").addClass("active");
+  function Info(tag,name,value) {
+    this.tag=tag;
+    this.name=name;
+    this.value=value;
+
+  }
   function Photo() {
     this.id=0;
     this.photoName="";
     this.srcUrl='';
     this.uploadTime=getLocalTime(new Date());
-  }
-  function queryAllPhoto() {
-    $.get("/admin/photo/",function (data) {
-      let content="";
-
-      data.forEach( item => {
-
-        content=content+"<div class=\"col-md-4\" style=\"margin-top: 10px;\">\n" +
-                "                        <div class=\"position-relative p-3 bg-gray\" \n" +
-                "                        onmouseover=\"mousehoverdiv(this)\"\n" +
-                "                        onmouseout=\"mouseoutdiv(this)\"\n" +
-                'style="height: 180px;background-image: url('+item.srcUrl+');background-size: 100% 100%;">' +
-                "                          <div class=\"ribbon-wrapper ribbon-xl\">\n" +
-                "                            <div class=\"ribbon bg-secondary\">\n" +
-               item.photoName +
-                "                            </div>\n" +
-                "                          </div>\n" +
-
-                "                          <button onclick='queryimg(\" "+encodeURIComponent(item.srcUrl)+" \")' class=\"blockstyle btn btn-danger\" style='display: none;'><i class=\"fas fa-search-plus\"></i>查看</button>\n" +
-
-                "                              <button onclick='delimg("+item.id+")' class=\"blockstyle btn btn-danger\" style='left: 55%;display: none;'><i class=\"fas fa-trash-alt\"></i>删除</button>" +
-
-                "                        </div>  </div>";
-
-
-      });
-      if(data.length>0){
-        $("#phtotlist .card-body div").html(content);
-      }
-
-    });
-  }
-  queryAllPhoto();
- function mousehoverdiv(e){
-      
-      var currentEle=e;
-   
-    
-      $(currentEle).find('.blockstyle').css("display","inline-block");
 
   }
 
-  function mouseoutdiv(e){
-      
-      var currentEle=e;
-    
-    $(currentEle).find(".blockstyle").css("display","none");
-    
 
-  }
+  new Vue({
+    el: '#content-main',
+    data: {
+      photoCount: 52,
+      photodatalist:[],
+      showimgurl:"",
+     buttonstatus:"display: none;",
+      ind:""
+    }, methods: {
+      queryAllPhoto: function () {
+        var _this=this;
 
-  function queryimg(url){
-    url=decodeURIComponent(url);
-    $("#ShowImage_Form").find("#img_show").html("<image src="+url+" class='carousel-inner img-responsive img-rounded' />");
-    $("#ShowImage_Form").modal();
 
-  }
-
-  function photodata(photoname,srcUrl) {
-    return  "图片名:<input width='50%' type=\"text\" name='photoname'  class=\"form-control\" value='" +photoname +"' style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
-            +"<br/>" + "图片地址:<input  type=\"text\" name='srcUrl' class=\"form-control\" value='" +srcUrl +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
-  }
-
-  function addImg() {
-
-    showSampleInfo("添加图片:",photodata("",""),"确定",function () {
-
-      $("#infomodal .modal-footer #save").click(function () {
-        let photo=new Photo();
-      var photoname=$("#infomodal .modal-body input[name='photoname']").val();
-        var srcUrl=$("#infomodal .modal-body input[name='srcUrl']").val();
-
-        photo.photoName=photoname;
-        photo.srcUrl=srcUrl;
-        photo.uploadTime=getLocalTime(new Date());
-        console.log(photo);
-        $.post("/admin/photo/",photo,function (data) {
+        $.get("/admin/photo/",function (data) {
           console.log(data);
-          showalert("提示:","添加图片成功!");
+
+          if(data.length>0){
+            _this.photodatalist=data;
+
+
+          }
+          console.log(this.photodatalist);
+
+
         });
 
-      });
+      },
+
+      mousehoverdiv:function (index) {
+        this.ind=index;
+
+      },
+      mouseoutdiv:function () {
+        this.ind="";
+
+      },
+      queryimg:function (url){
+
+    this.showimgurl=url;
+    $("#ShowImage_Form").modal();
+
+  },
+      delimg:function (id){
+
+    console.log("删除 "+id);
+    let photo=new Photo();
+    photo.id=id;
+  var _this=this;
+        infomodalElement.showInfo("删除图片:",[],false,"删除","是否删除该图片?",function () {
+          console.log("infomodalElement 2");
+
+        $.ajax({
+          url: "/admin/photo/",
+          type: 'DELETE',
+          data:photo,
+          success: function(result) {
+            console.log("删除: "+result);
+            showalert("提示:","删除图片成功!");
+
+            setTimeout(hidealert,1000);
+            _this.queryAllPhoto();
+          }
+        });
 
 
 
     });
 
   }
+    },created: function () {
+      this.queryAllPhoto();
+    }
+  })
+</script>
+<script>
+  $("ul#navul li:nth-of-type(5) a").addClass("active");
 
-function delimg(id){
+  //
+  // "<input width='50%' type=\"text\" name='photoname'  class=\"form-control\" value='" +photoname +"' style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
+  // +"<br/>" + "图片地址:<input  type=\"text\" name='srcUrl' class=\"form-control\" value='" +srcUrl +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
+  function addImg() {
 
-  console.log("删除 "+id);
-  let photo=new Photo();
-  photo.id=id;
 
-  showSampleInfo("提示:","是否删除该图片?","确定",function () {
+   var infolist=[];
 
-    $("#infomodal .modal-footer #save").click(function () {
-      $.ajax({
-        url: "/admin/photo/",
-        type: 'DELETE',
-        data:photo,
-        success: function(result) {
-          console.log("删除: "+result);
-          showalert("提示:","删除图片成功!");
+   infolist.push(new Info("图片名:","photoname",""));
+    infolist.push(new Info("图片地址:","srcUrl",""));
+  var oktext="增加";
+  var info="";
+    infomodalElement.showInfo("添加图片:",infolist,true,oktext,info,function () {
 
-          setTimeout(hidealert,1000);
-          queryAllPhoto();
-        }
+      let photo=new Photo();
+
+      var photoname=$("#infomodal .modal-body input[name='photoname']").val();
+      var srcUrl=$("#infomodal .modal-body input[name='srcUrl']").val();
+      photo.photoName=photoname;
+      photo.srcUrl=srcUrl;
+      photo.uploadTime=getLocalTime(new Date());
+
+      console.log(photo);
+
+      $.post("/admin/photo/",photo,function (data) {
+        console.log(data);
+        showalert("提示:","添加图片成功!");
       });
 
     });
-  });
+    
 
-}
+
+  }
+
   </script>
 
 

@@ -33,6 +33,7 @@
     <!-- <script src="dist/js/pages/dashboard.js"></script> -->
     <!-- AdminLTE for demo purposes -->
     <script src="/dist/js/demo.js"></script>
+
     <script>
         Date.prototype.Format = function (fmt) {
             var o = {
@@ -54,26 +55,7 @@
 
             return nS.Format("yyyy-MM-dd HH:mm:ss");
         }
-        function showSampleInfo(title,content,oktext,callback) {
 
-            $("#infomodal h4").html(title);
-            $("#infomodal .modal-body").html(content);
-            $("#infomodal .modal-footer #save").html(oktext);
-
-            $("#infomodal .modal-footer #save").attr("data-dismiss","modal");
-            typeof callback==="function";
-            callback();
-        }
-
-        function showInfo(title,content,callback) {
-
-            $("#infomodal h4").html(title);
-            $("#infomodal .modal-body").html(content);
-
-            typeof callback==="function";
-            callback();
-
-        }
 
 
         function updateData(data,url,alertTitle,alertContent) {
