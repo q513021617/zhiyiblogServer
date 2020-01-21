@@ -28,12 +28,12 @@
                     <p v-if="!isinputlist">{{info}}</p>
 
                    <div v-for="item in infolist "  v-if="isinputlist">
-                       {{item.tag}}<input width='50%' type="text" :name="item.name"  class="form-control" :value="item.value"  style=" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;"/><br/>
+                       {{item.tag}}<input width='50%' type="text" :name="item.name" v-model="item.value" class="form-control"  style=" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;"/><br/>
                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" id="save" class="btn btn-primary toastsDefaultSuccess">{{oktext}}</button>
+                    <button type="button" id="save" class="btn btn-primary toastsDefaultSuccess" data-dismiss="modal">{{oktext}}</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -60,6 +60,8 @@
             }, methods: {
 
                 showInfo:function (title,infolist,isinputlist,oktext,info,callback) {
+                    //此方法不提供显示模态框的功能只提供模态框数据填充，模态框显示需要按钮 实现属性---data-toggle="modal"  data-target="#infomodal"
+
                     console.log("infomodalElement ");
                     this.inputtitle=title;
                     this.infolist=infolist;

@@ -31,7 +31,7 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
+      <div id="site_content-main" class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
          
@@ -40,7 +40,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>53</h3>
 
                 <p>站点访问量</p>
               </div>
@@ -63,18 +63,18 @@
           
         </div>
 
-        <input type="text" class="form-control" style="width: 30%;border-style: solid;border-width: medium;border-color: #007bff;"/>
+        <input  type="text" v-model="title" class="form-control" style="width: 30%;border-style: solid;border-width: medium;border-color: #007bff;"/>
 
         <div class="row">
           <h1>站点描述</h1>
           
         </div>
         <div class="row">
-          <textarea type="text" class="form-control" style="width: 30%;height:auto; border-style:solid;border-width: medium;border-color: #007bff;"></textarea>
+          <textarea type="text" v-model="description" class="form-control" style="width: 30%;height:auto; border-style:solid;border-width: medium;border-color: #007bff;" ></textarea>
         </div>
       <br>
           <div class="row">
-            <button class="btn btn-block btn-primary btn-lg" style="width: 30%;">更新</button>
+            <button class="btn btn-block btn-primary btn-lg" @click="updateContent" style="width: 30%;">更新</button>
           </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -90,6 +90,59 @@
 <div id="commonjs" th:replace="admin/admincommonjs::common_js(~{::script})">
 
 </div>
+<script>
+
+  function SeoInfo(id,title,description) {
+    this.id=id;
+    this.siteName=title;
+    this.siteDescription=description;
+
+  }
+
+  new Vue({
+    el: '#site_content-main',
+    data: {
+      title: 'zhiyi分享',
+      description:"一款博客系统",
+
+    }, methods: {
+
+      queryContent:function () {
+          var _this=this;
+        $.get("/admin/seoInfo/1",function (data) {
+            _this.title=data.siteName;
+          _this.description=data.siteDescription;
+          console.log(" 查询"+_this.title+" "+_this.description);
+        });
+      },
+
+      updateContent:function () {
+        var _this=this;
+        console.log(_this);
+        var seoInfo=new SeoInfo(1,_this.title,_this.description);
+        console.log(" 查询"+_this.title+" "+_this.description);
+        $.ajax({
+          url: "/admin/seoInfo/",
+          type: 'PUT',
+          data:seoInfo,
+          success: function(result) {
+            console.log("更新: "+result);
+            showalert("提示:","更新信息成功!");
+
+            setTimeout(hidealert,1000);
+            _this.queryContent();
+          }
+        });
+
+      }
+
+
+    },
+    created: function () {
+    this.queryContent();
+  }});
+
+</script>
 <script>
   $("ul#navul li:nth-of-type(4) a").addClass("active");
 </script>

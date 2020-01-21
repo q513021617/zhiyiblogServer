@@ -58,7 +58,7 @@
 
 
 
-        function updateData(data,url,alertTitle,alertContent) {
+        function updateData(data,url,alertTitle,alertContent,callback) {
 
             $.ajax({
                 url: url,
@@ -70,12 +70,43 @@
                     // showalert("提示:","更新用户成功!");
                     showalert(alertTitle,alertContent);
                     setTimeout(hidealert,1000);
-
+                    callback();
                 }
             });
 
         }
+        function addData(data,url,alertTitle,alertContent,callback) {
 
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data:data,
+                success: function(result) {
+                    console.log("添加: "+result);
+
+                    showalert(alertTitle,alertContent);
+                    setTimeout(hidealert,1000);
+                    callback();
+                }
+            });
+
+        }
+        function getData(data,url,alertTitle,alertContent,callback) {
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data:data,
+                success: function(result) {
+                    console.log("添加: "+result);
+
+                    showalert(alertTitle,alertContent);
+                    setTimeout(hidealert,1000);
+                    callback();
+                }
+            });
+
+        }
 
         function showalert(title,info) {
 
