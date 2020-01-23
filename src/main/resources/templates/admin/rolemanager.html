@@ -11,7 +11,7 @@
 
   </div>
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" id="usermanager">
+  <div class="content-wrapper" id="rolemanager">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -88,33 +88,31 @@
         <div class="row">
           <div class="card" style="width: 100%;height: auto;">
             <div class="card-header">
-              <h1 class="card-title" style="font-weight: bold;">用户列表</h1>
+              <h1 class="card-title" style="font-weight: bold;">角色列表</h1>
             </div>
-            <button @click="addUser" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >新增用户</button>
+            <button @click="addRole" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >新增角色</button>
             <!-- /.card-header -->
             <div class="card-body">
               <table id="userlist" class="table table-bordered">
                 <thead>
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>用户名</th>
-                  <th style="width:20%">密码</th>
-                  <th >身份</th>
-                  <th style="width:30%">操作</th>
+                  <th>角色名</th>
+
                 </tr>
                 </thead>
                 <tbody>
 
-                <tr v-if="userlist.length<=0">
-                  <td colspan="4">暂时无用户信息</td>
+                <tr v-if="rolelist.length<=0">
+                  <td colspan="4">暂时无角色信息</td>
                 </tr>
 
-                <tr v-for="item in userlist">
-            <td>{{item.id}}</td><td>{{item.username}}</td><td>{{item.password}}</td><td>{{item.role==1?'管理员':'普通用户'}}</td>
+                <tr v-for="item in rolelist">
+            <td>{{item.id}}</td><td>{{item.roleName}}</td>
                   <td>
-                    <button type="submit" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >封号</button>
-                  <button type="submit" class="btn btn-danger" data-toggle="modal"  data-target="#infomodal" @click="delAccount(item.id)">删除</button>
-                     <button type="submit" class="btn btn-info" data-toggle="modal"  data-target="#infomodal" @click="queryUser(item.id)">查看详细信息</button>
+
+                  <button type="submit" class="btn btn-danger" data-toggle="modal"  data-target="#infomodal" @click="delRole(item.id)">删除</button>
+                     <button type="submit" class="btn btn-info" data-toggle="modal"  data-target="#infomodal" @click="queryRole(item.id)">查看详细信息</button>
                   </td>
 
                 </tr>
@@ -156,44 +154,49 @@
     this.value=value;
 
   }
+
+  function Role() {
+    this.id=0;
+    this.roleName="";
+  }
   new Vue({
 
-      el: '#usermanager',
+      el: '#rolemanager',
       data: {
         userCount: 52,
 
-        userlist:[],
+        rolelist:[],
 
         buttonstatus:"display: none;",
         ind:""
       }, methods: {
 
-      queryAllUser:function () {
+      queryAllRole:function () {
         var _this=this;
-    $.get("/admin/user/",function (data) {
+    $.get("/admin/role/",function (data) {
 
-      _this.userlist=data;
+      _this.rolelist=data;
       _this.$forceUpdate();
 
     });
   },
-      delAccount:function (id) {
+      delRole:function (id) {
     console.log("删除 "+id);
-    let user=new User();
-    user.id=id;
+    let role=new Role();
+        role.id=id;
         var _this=this;
-        infomodalElement.showInfo("提示:","",false,"确定","是否删除该用户信息?",function () {
+        infomodalElement.showInfo("提示:","",false,"确定","是否删除该角色信息?",function () {
 
         $.ajax({
-          url: "/admin/user/",
+          url: "/admin/role/",
           type: 'DELETE',
-          data:user,
+          data:role,
           success: function(result) {
             console.log("删除: "+result);
-            showalert("提示:","删除用户成功!");
+            showalert("提示:","删除角色成功!");
 
             setTimeout(hidealert,500);
-            _this.queryAllUser();
+            _this.queryAllRole();
 
           }
         });
@@ -204,62 +207,49 @@
 
 
   },
-      queryUser: function (id) {
+      queryRole: function (id) {
 
         var _this=this;
-    $.get("/admin/user/"+id,function (data) {
+    $.get("/admin/role/"+id,function (data) {
       console.log(data);
       var infolist=[];
 
 
-      infolist.push(new Info("用户名","uername",data.username));
-      infolist.push(new Info("密码","password",data.password));
-      infolist.push(new Info("性别","sex",data.sex));
-      infolist.push(new Info("email","email",data.email));
-      infolist.push(new Info("角色","role",data.role));
+      infolist.push(new Info("权限名","roleName",data.roleName));
+
 
       infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
 
-          let tempUser=new User();
-        tempUser.id=id;
+          let tempRole=new Role();
+        tempRole.id=id;
           console.log("showInfo----");
-        tempUser.username=infolist[0].value;
-        tempUser.password=infolist[1].value;
-        tempUser.sex=infolist[2].value;
-        tempUser.email=infolist[3].value;
-        tempUser.role=infolist[4].value;
-          console.log(tempUser);
-          updateData(tempUser,"/admin/user/","提示:","用户数据更新完毕",function () {
-            _this.queryAllUser();
+        tempRole.roleName=infolist[0].value;
+
+          console.log(tempRole);
+          updateData(tempRole,"/admin/role/","提示:","用户数据更新完毕",function () {
+            _this.queryAllRole();
           });
 
 
       });
     });
 
-  },addUser: function () {
+  },addRole: function () {
 
         var infolist=[];
 
-        infolist.push(new Info("用户名","uername",""));
-        infolist.push(new Info("密码","password",""));
-        infolist.push(new Info("性别","sex",""));
-        infolist.push(new Info("email","email",""));
-        infolist.push(new Info("角色","role",""));
+        infolist.push(new Info("权限名","roleName",""));
+
         var _this=this;
-        infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
+        infomodalElement.showInfo("权限信息:",infolist,true,"确定","",function () {
           console.log(infolist);
 
-          var tempUser=new User();
-          tempUser.username=infolist[0].value;
-          tempUser.password=infolist[1].value;
-          tempUser.sex=infolist[2].value;
-          tempUser.email=infolist[3].value;
-          tempUser.role=infolist[4].value;
-          console.log(tempUser);
+          var tempRole=new Role();
+          tempRole.roleName=infolist[0].value;
+          console.log(tempRole);
 
-          addData(tempUser,"/admin/user/","信息:","添加用户成功!",function () {
-            _this.queryAllUser();
+          addData(tempRole,"/admin/role/","信息:","添加权限成功!",function () {
+            _this.queryAllRole();
           });
 
 
@@ -271,7 +261,7 @@
 
     }
     },created: function () {
-      this.queryAllUser();
+      this.queryAllRole();
   }
 
   });
@@ -280,20 +270,6 @@
 <script>
 
   $("ul#navul li:nth-of-type(2) a").addClass("active");
-  function User() {
-    this.id=0;
-    this.username="";
-    this.password='';
-    this.sex=1;
-    this.email="";
-    this.role=1;
-  }
-
-
-  function lockAccount(id) {
-    console.log("封号 "+id);
-    queryAllUser();
-  }
 
 
 

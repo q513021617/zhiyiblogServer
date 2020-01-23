@@ -18,7 +18,7 @@
 
   </div>
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="index_view">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -47,7 +47,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{userCount}}</h3>
 
                 <p>注册人数</p>
               </div>
@@ -173,9 +173,19 @@
                       </thead>
                       <tbody>
 
-                        <tr>
+                      <tr v-if="userlist.length<=0">
                         <td colspan="4">暂时无用户信息</td>
-                        </tr>
+                      </tr>
+
+                      <tr v-for="item in userlist">
+                        <td>{{item.id}}</td><td>{{item.username}}</td><td>{{item.password}}</td><td>{{item.role==1?'管理员':'普通用户'}}</td>
+                        <td>
+                          <button type="submit" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >封号</button>
+                          <button type="submit" class="btn btn-danger" data-toggle="modal"  data-target="#infomodal" @click="delAccount(item.id)">删除</button>
+                          <button type="submit" class="btn btn-info" data-toggle="modal"  data-target="#infomodal" @click="queryUser(item.id)">查看详细信息</button>
+                        </td>
+
+                      </tr>
 
 
                       </tbody>
@@ -212,7 +222,7 @@
 
 </div>
 <script>
-
+  // index_view
   function User() {
     this.id=0;
       this.username="";
@@ -221,37 +231,134 @@
       this.email="";
       this.role=1;
   }
+  function Info(tag,name,value) {
+    this.tag=tag;
+    this.name=name;
+    this.value=value;
+
+  }
+
+  new Vue({
+
+    el: '#index_view',
+    data: {
+      userCount: 52,
+
+      userlist:[],
+
+      buttonstatus:"display: none;",
+      ind:""
+    }, methods: {
+
+      queryAllUser:function () {
+        var _this=this;
+        $.get("/admin/user/",function (data) {
+
+          _this.userlist=data;
+          _this.$forceUpdate();
+
+        });
+      },
+      delAccount:function (id) {
+        console.log("删除 "+id);
+        let user=new User();
+        user.id=id;
+        var _this=this;
+        infomodalElement.showInfo("提示:","",false,"确定","是否删除该用户信息?",function () {
+
+          $.ajax({
+            url: "/admin/user/",
+            type: 'DELETE',
+            data:user,
+            success: function(result) {
+              console.log("删除: "+result);
+              showalert("提示:","删除用户成功!");
+
+              setTimeout(hidealert,500);
+              _this.queryAllUser();
+
+            }
+          });
+
+
+        });
 
 
 
-  function queryAllUser() {
-      $.get("/admin/user/",function (data) {
-        let content="";
+      },
+      queryUser: function (id) {
 
-          data.forEach( item => {
+        var _this=this;
+        $.get("/admin/user/"+id,function (data) {
+          console.log(data);
+          var infolist=[];
 
-              content=content+"<tr>\n" +
-                  "                          <td>"+item.id+".</td>" +
-                  "                          <td>"+item.username+"</td>" +
-                  "                          <td>" +
-                  "                           "+item.role+"" +
-                  "                          </td>" +
-                  "                          <td>" +
-                  "                            <button type=\"submit\" class=\"btn btn-primary\" onclick='lockAccount("+item.id+")'>封号</button>" +
-                  "                            <button type=\"submit\" class=\"btn btn-danger\" data-toggle=\"modal\"  data-target=\"#infomodal\" onclick='delAccount("+item.id+")'>删除账号</button>" +
-                  "                            <button type=\"submit\" class=\"btn btn-info\"  data-toggle=\"modal\"  data-target=\"#infomodal\" onclick='queryUser("+item.id+")'>查看详细信息</button>" +
-                  "                          </td>" +
-                  "                        </tr>";
+
+          infolist.push(new Info("用户名","uername",data.username));
+          infolist.push(new Info("密码","password",data.password));
+          infolist.push(new Info("性别","sex",data.sex));
+          infolist.push(new Info("email","email",data.email));
+          infolist.push(new Info("角色","role",data.role));
+
+          infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
+
+            let tempUser=new User();
+            tempUser.id=id;
+            console.log("showInfo----");
+            tempUser.username=infolist[0].value;
+            tempUser.password=infolist[1].value;
+            tempUser.sex=infolist[2].value;
+            tempUser.email=infolist[3].value;
+            tempUser.role=infolist[4].value;
+            console.log(tempUser);
+            updateData(tempUser,"/admin/user/","提示:","用户数据更新完毕",function () {
+              _this.queryAllUser();
+            });
 
 
           });
-          if(data.length>0){
-              $("#userlist tbody").html(content);
-          }
+        });
 
-      });
-  }
-  queryAllUser();
+      },addUser: function () {
+
+        var infolist=[];
+
+        infolist.push(new Info("用户名","uername",""));
+        infolist.push(new Info("密码","password",""));
+        infolist.push(new Info("性别","sex",""));
+        infolist.push(new Info("email","email",""));
+        infolist.push(new Info("角色","role",""));
+        var _this=this;
+        infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
+          console.log(infolist);
+
+          var tempUser=new User();
+          tempUser.username=infolist[0].value;
+          tempUser.password=infolist[1].value;
+          tempUser.sex=infolist[2].value;
+          tempUser.email=infolist[3].value;
+          tempUser.role=infolist[4].value;
+          console.log(tempUser);
+
+          addData(tempUser,"/admin/user/","信息:","添加用户成功!",function () {
+            _this.queryAllUser();
+          });
+
+
+        });
+
+
+
+
+
+      }
+    },created: function () {
+      this.queryAllUser();
+    }
+
+  });
+
+
 
   function lockAccount(id) {
       console.log("封号 "+id);
@@ -259,63 +366,11 @@
   }
 
 
-  function delAccount(id) {
-      console.log("删除 "+id);
-      let user=new User();
-      user.id=id;
-
-      showSampleInfo("提示:","是否删除该用户信息?","确定",function () {
-
-          $("#infomodal .modal-footer #save").click(function () {
-              $.ajax({
-                  url: "/admin/user/",
-                  type: 'DELETE',
-                  data:user,
-                  success: function(result) {
-                      console.log("删除: "+result);
-                      showalert("提示:","删除用户成功!");
-
-                      setTimeout(hidealert,1000);
-                      queryAllUser();
-                  }
-              });
-
-          });
-      });
 
 
 
-  }
 
-  function userdata(username,password,sex,email,role) {
-    return  "用户名:<input width='50%' type=\"text\" name='username'  class=\"form-control\" value='" +username +"' style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
-            +"<br/>" + "密码:<input  type=\"text\" name='password' class=\"form-control\" value='" +password +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
-            +"<br/>"  + "性别:<input type=\"text\" name='sex' class=\"form-control\" value='" + (sex==1?'男':'女') +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
-            +"<br/>" + "email:<input  type=\"text\" name='email' class=\"form-control\" value='" +email +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>"
-            +"<br/>"  + "角色:<input  type=\"text\" name='role' class=\"form-control\" value='" +role +"'  style=\" display: inline-block; width: 70%;margin-left: 20px;border-color: #007bff;\"/>";
-  }
 
-  function queryUser(id) {
-      $.get("/admin/user/"+id,function (data) {
-          console.log(data);
-          showInfo(data.username+"用户信息:", userdata(data.username,data.password,data.sex,data.email,data.role),function () {
-            $("#infomodal .modal-footer #save").click( function () {
-              let data=new User();
-              data.id=id;
-              console.log("showInfo----");
-              data.username = $("#infomodal .modal-body input[name='username']").val();
-              data.password = $("#infomodal .modal-body input[name='password']").val();
-              data.sex = $("#infomodal .modal-body input[name='sex']").val()=='男'?1:2;
-              data.email = $("#infomodal .modal-body input[name='email']").val();
-              data.role = $("#infomodal .modal-body input[name='role']").val();
-              console.log(data);
-              updateData(data,"/admin/user/","提示:","用户数据更新完毕");
-
-            });
-          });
-      });
-
-  }
 
 </script>
 <script>

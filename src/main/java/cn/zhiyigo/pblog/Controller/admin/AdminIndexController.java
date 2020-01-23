@@ -45,5 +45,9 @@ public class AdminIndexController {
         return "admin/usermanager";
     }
 
+    @RequestMapping("/admin/admin_rolemanager")
+    public String rolemanager(Map<String,Object> map){
 
+        return "admin/rolemanager";
+    }
 }
