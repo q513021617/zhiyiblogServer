@@ -56,7 +56,23 @@
             return nS.Format("yyyy-MM-dd HH:mm:ss");
         }
 
+        function delData(data,url,alertTitle,alertContent,callback) {
 
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data:data,
+                success: function(result) {
+                    console.log("删除: "+result);
+                    //alertTitle  alertContent
+                    // showalert("提示:","更新用户成功!");
+                    showalert(alertTitle,alertContent);
+                    setTimeout(hidealert,1000);
+                    callback();
+                }
+            });
+
+        }
 
         function updateData(data,url,alertTitle,alertContent,callback) {
 
