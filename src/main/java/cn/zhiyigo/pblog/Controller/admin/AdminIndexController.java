@@ -50,4 +50,10 @@ public class AdminIndexController {
 
         return "admin/rolemanager";
     }
+
+    @RequestMapping("/admin/admin_menu")
+    public String adminmenu(Map<String,Object> map){
+
+        return "admin/adminMenu";
+    }
 }

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/adminheadcss :: common_header(~{::title},~{::link})">
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+
+    <div id="commonnav" th:replace="admin/adminnav :: adminnav"  >
+
+    </div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="menumanager">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">本站数据</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">首页</a></li>
+                            <li class="breadcrumb-item active">菜单管理</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{userCount}}</h3>
+
+                                <p>注册人数</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>53</h3>
+
+                                <p>登录人数</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+
+
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>65</h3>
+
+                                <p>访问人数</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <div class="row">
+                    <div class="card" style="width: 100%;height: auto;">
+                        <div class="card-header">
+                            <h1 class="card-title" style="font-weight: bold;">菜单列表</h1>
+                        </div>
+                        <button @click="addMenu" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >新增菜单</button>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="menulist" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>菜单名</th>
+                                    <th>菜单链接</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr v-if="menulist.length<=0">
+                                    <td colspan="4">暂时无角色信息</td>
+                                </tr>
+
+                                <tr v-for="item in menulist">
+                                    <td>{{item.id}}</td><td>{{item.menuName}}</td>
+                                    <td>{{item.menuUrl}}</td>
+                                    <td>
+
+                                        <button type="submit" class="btn btn-danger" data-toggle="modal"  data-target="#infomodal" @click="delMenu(item.id)">删除</button>
+                                        <button type="submit" class="btn btn-info" data-toggle="modal"  data-target="#infomodal" @click="queryMenu(item.id)">查看详细信息</button>
+                                    </td>
+
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                <li class="page-item"><a class="page-link" href="#">«</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="admin/adminfooter :: myfooter"  ></div>
+
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<div id="commonjs" th:replace="admin/admincommonjs::common_js(~{::script})"></div>
+
+<script>
+    function Info(tag,name,value) {
+        this.tag=tag;
+        this.name=name;
+        this.value=value;
+
+    }
+
+    function Menu() {
+        this.id=0;
+        this.menuName="";
+        this.menuUrl="";
+    }
+    new Vue({
+
+        el: '#menumanager',
+        data: {
+            userCount: 52,
+
+            menulist:[],
+
+            buttonstatus:"display: none;",
+            ind:""
+        }, methods: {
+
+            queryAllMenu:function () {
+                var _this=this;
+                $.get("/admin/menu/",function (data) {
+
+                    _this.menulist=data;
+                    _this.$forceUpdate();
+
+                });
+            },
+            delMenu:function (id) {
+                console.log("删除 "+id);
+                let menu=new Menu();
+                menu.id=id;
+                var _this=this;
+                infomodalElement.showInfo("提示:","",false,"确定","是否删除该菜单信息?",function () {
+
+
+                    delData(menu,"/admin/menu/","提示:","删除菜单成功!",function () {
+                        _this.queryAllMenu();
+                    });
+
+                });
+
+
+
+            },
+            queryMenu: function (id) {
+
+                var _this=this;
+                $.get("/admin/menu/"+id,function (data) {
+                    console.log(data);
+                    var infolist=[];
+
+
+                    infolist.push(new Info("菜单名","menuName",data.menuName));
+                    infolist.push(new Info("菜单链接","menuUrl",data.menuUrl));
+
+
+                    infomodalElement.showInfo("菜单信息:",infolist,true,"确定","",function () {
+
+                        let tempMenu=new Menu();
+                        tempMenu.id=id;
+                        console.log("showInfo----");
+                        tempMenu.menuName=infolist[0].value;
+                        tempMenu.menuUrl=infolist[1].value;
+
+                        console.log(tempMenu);
+                        let menudata = new FormData();
+                        menudata.append('menuName',tempMenu.menuName);
+                        menudata.append('menuUrl',tempMenu.menuUrl);
+
+                        menudata.append('id',id);
+                        updateData(menudata,"/admin/menu/","提示:","菜单数据更新完毕",function () {
+                            _this.queryAllMenu();
+                        });
+
+
+                    });
+                });
+
+            },addMenu: function () {
+
+                var infolist=[];
+
+                infolist.push(new Info("菜单名","menuName",""));
+                infolist.push(new Info("菜单链接","menuUrl",""));
+
+                var _this=this;
+                infomodalElement.showInfo("菜单信息:",infolist,true,"确定","",function () {
+                    console.log(infolist);
+
+                    var tempMenu=new Menu();
+                    tempMenu.menuName=infolist[0].value;
+                    tempMenu.menuUrl=infolist[1].value;
+                    console.log(tempMenu);
+                    let menudata = new FormData();
+                    menudata.append('menuName',tempMenu.menuName);
+                    menudata.append('menuUrl',tempMenu.menuUrl);
+
+                    addData(menudata,"/admin/menu/","信息:","添加菜单成功!",function () {
+                        _this.queryAllMenu();
+                    });
+
+
+                });
+
+
+
+
+
+            }
+        },created: function () {
+            this.queryAllMenu();
+        }
+
+    });
+</script>
+
+<script>
+
+    $("ul#navul li:nth-of-type(5) a").addClass("active");
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

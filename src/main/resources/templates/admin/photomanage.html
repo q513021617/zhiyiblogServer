@@ -98,7 +98,8 @@
                       <h3 class="card-title">图片列表</h3>
 
                     </div>
-                    <button style="position: relative;left: 20px;width: 150px;"class="btn btn-danger"  data-toggle="modal"  data-target="#infomodal" onclick="addImg()">增加图片</button>
+<!--    style="position: relative;left: 20px;"      \width: 150px;-->
+                    <button class="btn btn-danger"  data-toggle="modal"  data-target="#infomodal" onclick="addImg()">增加图片</button>
                     <div class="card-body">
                       <div class="row">
 
@@ -182,7 +183,7 @@
   }
 
 
-  new Vue({
+ var photopage =new Vue({
     el: '#content-main',
     data: {
       photoCount: 52,
@@ -203,6 +204,7 @@
 
 
           }
+          _this.$forceUpdate();
           console.log(this.photodatalist);
 
 
@@ -229,23 +231,12 @@
     console.log("删除 "+id);
     let photo=new Photo();
     photo.id=id;
-  var _this=this;
+    var _this=this;
         infomodalElement.showInfo("删除图片:",[],false,"删除","是否删除该图片?",function () {
-          console.log("infomodalElement 2");
 
-        $.ajax({
-          url: "/admin/photo/",
-          type: 'DELETE',
-          data:photo,
-          success: function(result) {
-            console.log("删除: "+result);
-            showalert("提示:","删除图片成功!");
-
-            setTimeout(hidealert,1000);
+          delData(photo,"/admin/photo/","提示:","删除图片成功!",function () {
             _this.queryAllPhoto();
-          }
-        });
-
+          });
 
 
     });
@@ -283,10 +274,15 @@
 
       console.log(photo);
 
-      $.post("/admin/photo/",photo,function (data) {
-        console.log(data);
-        showalert("提示:","添加图片成功!");
+      let photodata = new FormData();
+      photodata.append('photoName',photo.photoName);
+      photodata.append('srcUrl',photo.srcUrl);
+      photodata.append('uploadTime',photo.uploadTime);
+      var _photopage=photopage;
+      addData(photodata,"/admin/photo/","信息:","添加图片成功!",function () {
+        _photopage.queryAllPhoto();
       });
+
 
     });
     

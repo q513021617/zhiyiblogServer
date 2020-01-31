@@ -187,20 +187,10 @@
         var _this=this;
         infomodalElement.showInfo("提示:","",false,"确定","是否删除该角色信息?",function () {
 
-        $.ajax({
-          url: "/admin/role/",
-          type: 'DELETE',
-          data:role,
-          success: function(result) {
-            console.log("删除: "+result);
-            showalert("提示:","删除角色成功!");
 
-            setTimeout(hidealert,500);
+          delData(role,"/admin/role/","提示:","删除用户成功!",function () {
             _this.queryAllRole();
-
-          }
-        });
-
+          });
 
     });
 
@@ -218,7 +208,7 @@
       infolist.push(new Info("权限名","roleName",data.roleName));
 
 
-      infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
+      infomodalElement.showInfo("权限信息:",infolist,true,"确定","",function () {
 
           let tempRole=new Role();
         tempRole.id=id;
@@ -226,7 +216,10 @@
         tempRole.roleName=infolist[0].value;
 
           console.log(tempRole);
-          updateData(tempRole,"/admin/role/","提示:","用户数据更新完毕",function () {
+        let roledata = new FormData();
+        roledata.append('roleName',tempRole.roleName);
+        roledata.append('id',id);
+          updateData(roledata,"/admin/role/","提示:","权限数据更新完毕",function () {
             _this.queryAllRole();
           });
 
@@ -247,8 +240,10 @@
           var tempRole=new Role();
           tempRole.roleName=infolist[0].value;
           console.log(tempRole);
+          let roledata = new FormData();
+          roledata.append('roleName',tempRole.roleName);
 
-          addData(tempRole,"/admin/role/","信息:","添加权限成功!",function () {
+          addData(roledata,"/admin/role/","信息:","添加权限成功!",function () {
             _this.queryAllRole();
           });
 
