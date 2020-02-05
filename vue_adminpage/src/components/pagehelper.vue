@@ -4,24 +4,22 @@
 
                     <ul class="pagination pagination-sm m-0 float-right">
                       <li class="page-item"><a class="page-link" href="#" @click="prepage">«</a></li>
-                      <div v-if="tatolpage<=5 ">
-                            <li class="page-item" v-for="(index,pageitem) in tatolpage"  v-bind:Key="index"><a class="page-link" href="#" @click="querybypage(pageitem)" >{{pageitem}}</a></li>
-                      </div>
+                   
+                      <li class="page-item" v-if="tatolpagedata<=5 " v-for="(index,pageitem) in tatolpagedata"  v-bind:Key="index" :class="index==curpagedata?'active':''"><a class="page-link"  href="#" @click="querybypage(index)" >{{index}}</a></li>
+                 
                       
-                      <div v-if=" index <= 2 && tatolpage>5 ">
-                          <li class="page-item"  v-for="(index,pageitem) in tatolpage"  v-bind:Key="index"><a class="page-link" href="#" @click="querybypage(index)" >{{index}}</a></li>
-                      
-                      </div>
+               
+                      <li class="page-item"  v-if=" index <= 2 && tatolpagedata>5 " v-for="(index,pageitem) in tatolpagedata"  v-bind:Key="index" :class="index==curpagedata?'active':''"<a class="page-link" href="#" @click="querybypage(index)" >{{index}}</a></li>
 
-                   <div v-if=" (index> 2 && index < tatolpage - 1) && tatolpage > 5 " > 
-                    <li class="page-item" v-for="(index,pageitem) in tatolpage"  v-bind:Key="index"><a  href="#" :class="pageitem==curpage?'page-link':''" @click="querybypage(index)">{{index==curpage?index:'.'}}</a></li>
+
+           
+                    <li class="page-item" v-if=" (index> 2 && index < tatolpagedata - 1) && tatolpage > 5 " v-for="(index,pageitem) in tatolpagedata"  v-bind:Key="index" :class="index==curpagedata?'active':''"><a  href="#" :class="pageitem==curpagedata?'page-link':''" @click="querybypage(index)">{{index==curpagedata?index:'.'}}</a></li>
                       
-                   </div>
+             
                      
-                     <div v-if="index >= tatolpage -1  && tatolpage > 5 ">
-                            <li class="page-item"  v-for="(index,pageitem) in tatolpage"  v-bind:Key="index"><a class="page-link" href="#" @click="querybypage(index)" >{{index}}</a></li>
-                     
-                     </div>
+                 
+                    <li class="page-item"  v-if="index >= tatolpagedata -1  && tatolpagedata > 5 " v-for="(index,pageitem) in tatolpagedata"  v-bind:Key="index" :class="index==curpagedata?'active':''"><a class="page-link" href="#" @click="querybypage(index)" >{{index}}</a></li>
+       
                     
                     
                       <li class="page-item"><a class="page-link" href="#" @click="nextpage">»</a></li>
@@ -35,24 +33,56 @@
        export default {
         
         name:"pagehelper",
-   
+         data(){
+
+            return {
+                tatolpagedata:0,
+                curpagedata:0
+
+                }},
         props:{
-            inputtitle:String,
-                isinputlist:Boolean,
-                isimglist:Boolean,
-                isimg:Boolean,
-                info:String,
-    
-                infolist:Array,
-                oktext:String,
-           
+            
+                tatolpage:Number,
+                curpage:Number,
         }
         ,methods:{
 
-        },created:function(){
-        
-          // this.infostring=this.parseDom(this.info);
+        prepage:function () {
 
+          if(this.curpagedata <= 1){
+            return;
+          }
+          this.curpagedata = this.curpagedata-1;
+        this.querybypage(this.curpagedata)
+           
+      },nextpage:function () {
+
+            if(this.curpagedata >= this.tatolpagedata){
+
+                this.curpagedata= this.tatolpagedata;
+                return;
+            }
+
+            this.querybypage(this.curpagedata+1)
+          
+      },
+      refreshdata:function (data) {
+
+          this.tatolpagedata=data;
+        
+      },
+      querybypage:function (num) {
+
+        this.curpagedata=num;
+
+        // queryAllBypage();
+        this.$emit('queryAllBypagechild',this.curpagedata);
+        console.log(num);
+      },
+        },created:function(){
+              
+          this.tatolpagedata=this.tatolpage;
+          this.curpagedata=this.curpage;
         },mounted:function () {
           
             console.log("pagehelper---组件创建成功!");

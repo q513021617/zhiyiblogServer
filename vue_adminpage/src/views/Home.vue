@@ -175,7 +175,12 @@
                     </table>
                   </div>
                   <!-- /.card-body -->
-                 
+                 <Pagehelper
+                 v-bind:tatolpage="tatolpage"
+                 v-bind:curpage="curpage"
+                 v-on:queryAllBypagechild="queryAllUserBypage"
+                 ref = "pagehp"
+                 ></Pagehelper>
                 </div>
       
                 </div>
@@ -212,6 +217,7 @@
 import httpmethods from '@/tools/http'
 import Vue from 'vue'
 import Infomodal from '@/components/infomodal.vue'
+import Pagehelper from '@/components/pagehelper.vue'
 import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
 
   function User() {
@@ -260,8 +266,8 @@ export default {
             Toasttext:"",
           showtoast:false,
 
-          pagesize:1,
-          tatolpage:1,
+          pagesize:5,
+          tatolpage:5,
           curpage:1
       }
       
@@ -296,54 +302,29 @@ export default {
           // this.$forceUpdate();
        window.setTimeout(_this.closeInfoToastP,1000);
 
-      },prepage:function () {
-
-          if(this.curpage <= 1){
-            return;
-          }
-          this.curpage = this.curpage-1;
-        this.querybypage(this.curpage)
-           
-      },nextpage:function () {
-
-            if(this.curpage >= this.tatolpage){
-
-                this.curpage=this.tatolpage;
-                return;
-            }
-
-            this.querybypage(this.curpage+1)
-          
       },
-      closeInfoModelP:function (showmodel) {
-
-        this.showmodel=showmodel;
-
-      },
-      querybypage:function (num) {
-        this.curpage=num;
-
-        this.queryAllUserBypage();
-
-        console.log(num);
-      },
-      queryAllUserBypage:function () {
-
-        var _this=this;
+      queryAllUserBypage:function (page) {
         
-       
-        httpmethods.axios.get("/api/admin/webUser/"+(this.curpage-1)+"/"+this.pagesize,{}).then(
+        console.log("queryAllUserBypage");
+        var _this=this;
+        page = page-1;
+
+      console.log("page: " +page);
+        httpmethods.axios.get("/api/admin/webUser/"+page+"/"+this.pagesize,{}).then(
 
           function (data) {
 
             data=data.data;
-            console.log(data.content);
+            console.log("data.content");
+            console.log(data.totalPages);
             _this.userCount=66;
-          _this.userlist=data.content;
-          _this.tatolpage=data.totalPages;
+          _this.userlist = data.content;
+          _this.tatolpage= data.totalPages;
+           _this.$refs.pagehp.refreshdata( _this.tatolpage);
           _this.$forceUpdate();
 
         }
+
         ).catch(function (error) {
 
           console.log(error);
@@ -370,7 +351,7 @@ export default {
             _this.showToastFuc("信息:","","删除用户成功!");
             _this.closeInfoModelP();
             setTimeout(_this.closeInfoModelP,500);
-            _this.queryAllUserBypage();
+            _this.queryAllUserBypage(1);
 
           }
         });
@@ -461,8 +442,8 @@ export default {
           httpmethods.addDataFuc(userdata,"/api/admin/webUser/",function () {
             // 
             _this.showToastFuc("信息:","","添加用户成功!");
-            _this.queryAllUserBypage();
-            
+            _this.queryAllUserBypage(1);
+           
             _this.closeInfoModelP();
           });
 
@@ -550,18 +531,19 @@ export default {
 
       }
     },created: function () {
-      this.queryAllUserBypage();
-     
+      
+          
       
     }, mounted:function(){
       
-   
- this.getCharts();
+          this.queryAllUserBypage(1);
+          this.getCharts();
 
     },
   components: {
     Infomodal,
-    ToastsContainerTopRight
+    ToastsContainerTopRight,
+    Pagehelper
   }
 }
 </script>

@@ -114,15 +114,12 @@
               </table>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer clearfix">
-              <ul class="pagination pagination-sm m-0 float-right">
-                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
-              </ul>
-            </div>
+               <Pagehelper
+                 v-bind:tatolpage="tatolpage"
+                 v-bind:curpage="curpage"
+                 v-on:queryAllBypagechild="queryAllUserBypage"
+                 ref = "pagehp"
+                 ></Pagehelper>
           </div>
 
         </div>
@@ -174,7 +171,7 @@ import httpmethods from '@/tools/http'
 import Infomodal from '@/components/infomodal.vue'
 import Vue from 'vue'
 import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
-
+import Pagehelper from '@/components/pagehelper.vue'
 export default {
 
 name: 'usermanager',
@@ -202,6 +199,10 @@ name: 'usermanager',
             ToastSubtitle:"",
             Toasttext:"",
           showtoast:false,
+
+            pagesize:5,
+          tatolpage:5,
+          curpage:1
         }
       }, 
       methods: {
@@ -239,19 +240,22 @@ name: 'usermanager',
       closeInfoModelP:function (showmodel) {
         this.showmodel=showmodel;
       },
-      queryAllUser:function () {
+      queryAllUserBypage:function (page){
 
         var _this=this;
         
-       
-        httpmethods.axios.get("/api/admin/webUser/",{}).then(
+        page = page-1;
+         httpmethods.axios.get("/api/admin/webUser/"+page+"/"+this.pagesize,{}).then(
 
-          function (data) {
+            function (data) {
 
             data=data.data;
-            console.log(data);
+            console.log("data.content");
+            console.log(data.totalPages);
             _this.userCount=66;
-          _this.userlist=data;
+          _this.userlist = data.content;
+          _this.tatolpage= data.totalPages;
+           _this.$refs.pagehp.refreshdata( _this.tatolpage);
           _this.$forceUpdate();
 
         }
@@ -380,11 +384,12 @@ name: 'usermanager',
 
     }
     },created: function () {
-      this.queryAllUser();
+       this.queryAllUserBypage(1);
   },
   components:{
     Infomodal,
-    ToastsContainerTopRight
+    ToastsContainerTopRight,
+    Pagehelper
   }
 }
 </script>
