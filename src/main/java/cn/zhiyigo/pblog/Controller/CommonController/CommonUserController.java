@@ -1,16 +1,15 @@
 package cn.zhiyigo.pblog.Controller.CommonController;
 
 import cn.zhiyigo.pblog.Dao.UserDao;
-import cn.zhiyigo.pblog.Model.User;
-import org.hibernate.criterion.Example;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.internal.SessionImpl;
+import cn.zhiyigo.pblog.Model.WebUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CommonUserController {
 
@@ -18,47 +17,50 @@ public class CommonUserController {
     private UserDao userDao;
 
     @GetMapping("/")
-    public List<User> getUserList(){
+    public List<WebUser> getUserList(){
 
         return userDao.findAll();
     }
 
-    @GetMapping("/{id}")
-    public User getUserByid(@PathVariable("id")Integer userid){
 
-        return  userDao.findById(userid).get();
+    @GetMapping("/{page}/{size}")
+    public Iterable<WebUser> getUserList(@PathVariable("page")String page,@PathVariable("size")int size){
+        Pageable pageable = new PageRequest(Integer.parseInt(page),size);
+
+        return userDao.findAll(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public WebUser getUserByid(@PathVariable("id")Integer userid){
+
+      Optional<WebUser> tempuser=userDao.findById(userid);
+        return tempuser.orElse(null);
     }
 
     @PutMapping("/")
-    public User updateUser(User user){
+    public WebUser updateUser(WebUser webUser){
 
 
-        return  userDao.save(user);
+        return  userDao.save(webUser);
     }
 
     @PostMapping("/")
-    public User addUser(User user){
+    public WebUser addUser(WebUser webUser){
 
 
-        return  userDao.save(user);
+        return  userDao.save(webUser);
     }
 
     @DeleteMapping("/")
-    public void delOneUser(User user){
+    public void delOneUser(WebUser webUser){
 
-        userDao.delete(user);
+        userDao.delete(webUser);
     }
 
     @DeleteMapping("/all")
     public void delAllUser(){
 
         userDao.deleteAll();
-    }
-
-    @PostMapping("/login")
-    public boolean userlogin(User user){
-
-        return userDao.findByusername(user.getUsername()).getPassword().equals(user.getPassword());
     }
 
 }

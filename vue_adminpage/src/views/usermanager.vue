@@ -130,16 +130,54 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+     <Infomodal
+     v-bind:inputtitle="inputtitle"
+     v-bind:isinputlist="isinputlist"
+     v-bind:info="info"
+     v-bind:oktext="oktext"
+     v-on:closeInfoModel="closeInfoModelP"
+     v-on:okmethod="okmethodP"
+     v-bind:infolist="infolist"
+     v-if="showmodel"
+     ></Infomodal>
+
+  <ToastsContainerTopRight
+     v-bind:ToastTitle="ToastTitle"
+     v-bind:ToastSubtitle="ToastSubtitle"
+     v-bind:Toasttext="Toasttext"
+     v-if="showtoast"
+     v-on:closeInfoToast="closeInfoToastP"
+     ></ToastsContainerTopRight>
+
   </div>
   <!-- /.content-wrapper -->
 
 </template>
 
 <script>
+function Info(tag,name,value) {
+    this.tag=tag;
+    this.name=name;
+    this.value=value;
 
+  }
+  function User() {
+    this.id=0;
+    this.username="";
+    this.password='';
+    this.sex=1;
+    this.email="";
+    this.role=1;
+  }
 import httpmethods from '@/tools/http'
+import Infomodal from '@/components/infomodal.vue'
 import Vue from 'vue'
+import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
+
 export default {
+
+name: 'usermanager',
 
  data(){
         return{
@@ -148,17 +186,65 @@ export default {
         userlist:[],
 
         buttonstatus:"display: none;",
-        ind:""
+        ind:"",
+
+           // 模态框数据
+         inputtitle:"",
+          isinputlist:true,
+          info:"",
+          infolist:[],
+          oktext:"",
+          okmethodP:Function,
+          showmodel:false,
+
+           // 提示框数据
+           ToastTitle:"",
+            ToastSubtitle:"",
+            Toasttext:"",
+          showtoast:false,
         }
       }, 
       methods: {
 
+      closeInfoModelP:function (showmodel) {
+        this.showmodel=showmodel;
+      },
+      closeInfoToastP:function () {
+        this.showtoast=false;
+      },
+        showinfo:function(inputtitle,infolist,isinputlist,oktext,info,okmethod) {
+        console.log("showinfo");
+        this.inputtitle=inputtitle;
+          this.isinputlist=isinputlist;
+          this.info=info;
+          this.infolist=infolist;
+          this.oktext=oktext;
+          this.okmethodP=okmethod;
+          this.showmodel=true;
+   
+          // this.$forceUpdate();
+       
+      },showToastFuc:function(ToastTitle,ToastSubtitle,Toasttext) {
+        console.log("showToast");
+        
+        this.ToastTitle=ToastTitle;
+            this.ToastSubtitle=ToastSubtitle;
+            this.Toasttext=Toasttext;
+          this.showtoast=true;
+        var _this=this;
+          // this.$forceUpdate();
+       window.setTimeout(_this.closeInfoToastP,1000);
+
+      },
+      closeInfoModelP:function (showmodel) {
+        this.showmodel=showmodel;
+      },
       queryAllUser:function () {
 
         var _this=this;
         
        
-        httpmethods.axios.get("/api/admin/user/",{}).then(
+        httpmethods.axios.get("/api/admin/webUser/",{}).then(
 
           function (data) {
 
@@ -176,23 +262,25 @@ export default {
                 });
       },
       delAccount:function (id) {
-    console.log("删除 "+id);
-    let user=new User();
-    user.id=id;
-        let userdata = new FormData();
-        userdata.append('id',user.id);
-        var _this=this;
-        infomodalElement.showInfo("提示:","",false,"确定","是否删除该用户信息?",function () {
 
+    console.log("删除 "+id);
+    let webUser=new User();
+    webUser.id=id;
+        let userdata = new FormData();
+        userdata.append('id',webUser.id);
+        var _this=this;
+
+        this.showinfo("提示:",[],false,"确定","是否删除该用户信息?",function () {
+    
         $.ajax({
-          url: "/admin/user/",
+          url: "/api/admin/webUser/",
           type: 'DELETE',
-          data:user,
+          data:webUser,
           success: function(result) {
             console.log("删除: "+result);
-            showalert("提示:","删除用户成功!");
-
-            setTimeout(hidealert,500);
+            _this.showToastFuc("信息:","","删除用户成功!");
+            _this.closeInfoModelP();
+            setTimeout(_this.closeInfoModelP,500);
             _this.queryAllUser();
 
           }
@@ -207,7 +295,7 @@ export default {
       queryUser: function (id) {
 
         var _this=this;
-    $.get("/admin/user/"+id,function (data) {
+    $.get("/api/admin/webUser/"+id,function (data) {
       console.log(data);
       var infolist=[];
 
@@ -218,25 +306,27 @@ export default {
       infolist.push(new Info("email","email",data.email));
       infolist.push(new Info("角色","role",data.role));
 
-      infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
+      _this.showinfo("用户信息:",infolist,true,"确定","",function () {
 
-          let tempUser=new User();
-        tempUser.id=id;
+          let tempWebUser=new User();
+        tempWebUser.id=id;
           console.log("showInfo----");
-        tempUser.username=infolist[0].value;
-        tempUser.password=infolist[1].value;
-        tempUser.sex=infolist[2].value;
-        tempUser.email=infolist[3].value;
-        tempUser.role=infolist[4].value;
+        tempWebUser.username=infolist[0].value;
+        tempWebUser.password=infolist[1].value;
+        tempWebUser.sex=infolist[2].value;
+        tempWebUser.email=infolist[3].value;
+        tempWebUser.role=infolist[4].value;
         let userdata = new FormData();
-        userdata.append('id',tempUser.id);
-        userdata.append('username',tempUser.username);
-        userdata.append('password',tempUser.password);
-        userdata.append('sex',tempUser.sex);
-        userdata.append('email',tempUser.email);
-        userdata.append('role',tempUser.role);
+        userdata.append('id',tempWebUser.id);
+        userdata.append('username',tempWebUser.username);
+        userdata.append('password',tempWebUser.password);
+        userdata.append('sex',tempWebUser.sex);
+        userdata.append('email',tempWebUser.email);
+        userdata.append('role',tempWebUser.role);
           console.log(userdata);
-          updateData(userdata,"/admin/user/","提示:","用户数据更新完毕",function () {
+          httpmethods.updateDataFuc(userdata,"/api/admin/webUser/",function () {
+            _this.showToastFuc("提示:","","用户数据更新完毕");
+            _this.closeInfoModelP();
             _this.queryAllUser();
           });
 
@@ -254,27 +344,31 @@ export default {
         infolist.push(new Info("email","email",""));
         infolist.push(new Info("角色","role",""));
         var _this=this;
-        infomodalElement.showInfo("用户信息:",infolist,true,"确定","",function () {
+        this.showinfo("用户信息:",infolist,true,"确定","",function () {
           console.log(infolist);
 
-          var tempUser=new User();
+          var tempWebUser=new User();
 
-          tempUser.username=infolist[0].value;
-          tempUser.password=infolist[1].value;
-          tempUser.sex=infolist[2].value;
-          tempUser.email=infolist[3].value;
-          tempUser.role=infolist[4].value;
+          tempWebUser.username=infolist[0].value;
+          tempWebUser.password=infolist[1].value;
+          tempWebUser.sex=infolist[2].value;
+          tempWebUser.email=infolist[3].value;
+          tempWebUser.role=infolist[4].value;
 
           let userdata = new FormData();
-          userdata.append('username',tempUser.username);
-          userdata.append('password',tempUser.password);
-          userdata.append('sex',tempUser.sex);
-          userdata.append('email',tempUser.email);
-          userdata.append('role',tempUser.role);
-          console.log(tempUser);
+          userdata.append('username',tempWebUser.username);
+          userdata.append('password',tempWebUser.password);
+          userdata.append('sex',tempWebUser.sex);
+          userdata.append('email',tempWebUser.email);
+          userdata.append('role',tempWebUser.role);
+          console.log(tempWebUser);
 
-          addData(userdata,"/admin/user/","信息:","添加用户成功!",function () {
+          httpmethods.addDataFuc(userdata,"/api/admin/webUser/",function () {
+            // 
+            _this.showToastFuc("信息:","","添加用户成功!");
             _this.queryAllUser();
+            
+            _this.closeInfoModelP();
           });
 
 
@@ -287,6 +381,10 @@ export default {
     }
     },created: function () {
       this.queryAllUser();
+  },
+  components:{
+    Infomodal,
+    ToastsContainerTopRight
   }
 }
 </script>

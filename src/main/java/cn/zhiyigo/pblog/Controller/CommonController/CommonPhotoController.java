@@ -1,8 +1,6 @@
 package cn.zhiyigo.pblog.Controller.CommonController;
 
-import cn.zhiyigo.pblog.Dao.MenuDao;
 import cn.zhiyigo.pblog.Dao.PhotoDao;
-import cn.zhiyigo.pblog.Model.Menu;
 import cn.zhiyigo.pblog.Model.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

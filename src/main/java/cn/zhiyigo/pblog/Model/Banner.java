@@ -6,15 +6,18 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "menu")
-public class Menu {
+@Table(name = "banner")
+public class Banner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(name = "menu_name")
-    String menuName;
-    @Column(name = "menu_url")
-    String menuUrl;
 
+
+    @Column(name = "banner_name")
+    String bannerName;
+
+
+    @Column(name = "banner_url")
+    String bannerUrl;
 }

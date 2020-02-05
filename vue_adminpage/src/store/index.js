@@ -3,13 +3,19 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+// 创建store数据源，所有共享的数据都逃统一放到store的state中进行储存
 
-  state: {
+const store = new Vuex.Store({
 
+
+  
+state: {
+      userinfo:{}
   },
   mutations: {
-
+      setUserinfo(state,info){
+        state.userinfo=info;
+      }
   },
   actions: {
 
@@ -18,4 +24,5 @@ export default new Vuex.Store({
 
   }
   
-})
+});
+export default store

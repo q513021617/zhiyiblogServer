@@ -175,15 +175,7 @@
                     </table>
                   </div>
                   <!-- /.card-body -->
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item"><a class="page-link" href="#">«</a></li>
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul>
-                  </div>
+                 
                 </div>
       
                 </div>
@@ -216,8 +208,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 import httpmethods from '@/tools/http'
 import Vue from 'vue'
@@ -249,6 +239,7 @@ export default {
    data(){
 
       return {
+        
         userCount: 55,
 
         userlist:[],
@@ -269,6 +260,9 @@ export default {
             Toasttext:"",
           showtoast:false,
 
+          pagesize:1,
+          tatolpage:1,
+          curpage:1
       }
       
     }, methods: {
@@ -279,7 +273,7 @@ export default {
       closeInfoToastP:function () {
         this.showtoast=false;
       },
-      showinfo:function(inputtitle,infolist,isinputlist,oktext,info,okmethod) {
+        showinfo:function(inputtitle,infolist,isinputlist,oktext,info,okmethod) {
         console.log("showinfo");
         this.inputtitle=inputtitle;
           this.isinputlist=isinputlist;
@@ -291,33 +285,62 @@ export default {
    
           // this.$forceUpdate();
        
-        
-      },
-      showToast:function(ToastTitle,ToastSubtitle,Toasttext) {
+      },showToastFuc:function(ToastTitle,ToastSubtitle,Toasttext) {
         console.log("showToast");
         
         this.ToastTitle=ToastTitle;
             this.ToastSubtitle=ToastSubtitle;
             this.Toasttext=Toasttext;
           this.showtoast=true;
-   
+        var _this=this;
           // this.$forceUpdate();
-       
-        
+       window.setTimeout(_this.closeInfoToastP,1000);
+
+      },prepage:function () {
+
+          if(this.curpage <= 1){
+            return;
+          }
+          this.curpage = this.curpage-1;
+        this.querybypage(this.curpage)
+           
+      },nextpage:function () {
+
+            if(this.curpage >= this.tatolpage){
+
+                this.curpage=this.tatolpage;
+                return;
+            }
+
+            this.querybypage(this.curpage+1)
+          
       },
-      queryAllUser:function () {
+      closeInfoModelP:function (showmodel) {
+
+        this.showmodel=showmodel;
+
+      },
+      querybypage:function (num) {
+        this.curpage=num;
+
+        this.queryAllUserBypage();
+
+        console.log(num);
+      },
+      queryAllUserBypage:function () {
 
         var _this=this;
         
        
-        httpmethods.axios.get("/api/admin/user/",{}).then(
+        httpmethods.axios.get("/api/admin/webUser/"+(this.curpage-1)+"/"+this.pagesize,{}).then(
 
           function (data) {
 
             data=data.data;
-            console.log(data);
+            console.log(data.content);
             _this.userCount=66;
-          _this.userlist=data;
+          _this.userlist=data.content;
+          _this.tatolpage=data.totalPages;
           _this.$forceUpdate();
 
         }
@@ -330,27 +353,30 @@ export default {
      
       delAccount:function (id) {
         console.log("删除 "+id);
-        let user=new User();
-        user.id=id;
+    let webUser=new User();
+    webUser.id=id;
+        let userdata = new FormData();
+        userdata.append('id',webUser.id);
         var _this=this;
+
         this.showinfo("提示:",[],false,"确定","是否删除该用户信息?",function () {
-        console.log("删除 func");
-          $.ajax({
-            url: "/api/admin/user/",
-            type: 'DELETE',
-            data:user,
-            success: function(result) {
-              console.log("删除: "+result);
-      
-              _this.showToast("提示:","","删除用户成功!");
-              setTimeout(_this.closeInfoToastP,500);
-              _this.queryAllUser();
+    
+        $.ajax({
+          url: "/api/admin/webUser/",
+          type: 'DELETE',
+          data:webUser,
+          success: function(result) {
+            console.log("删除: "+result);
+            _this.showToastFuc("信息:","","删除用户成功!");
+            _this.closeInfoModelP();
+            setTimeout(_this.closeInfoModelP,500);
+            _this.queryAllUserBypage();
 
-            }
-          });
-
-
+          }
         });
+
+
+    });
 
 
 
@@ -359,7 +385,7 @@ export default {
 
         var _this=this;
         
-        $.get("/api/admin/user/"+id,function (data) {
+        $.get("/api/admin/webUser/"+id,function (data) {
           console.log(data);
           var infolist=[];
 
@@ -370,35 +396,42 @@ export default {
           infolist.push(new Info("email","email",data.email));
           infolist.push(new Info("角色","role",data.role));
 
-          this.$refs.infomodal.showInfo("用户信息:",infolist,true,"确定","",function () {
+          _this.showinfo("用户信息:",infolist,true,"确定","",function () {
 
-            let tempUser=new User();
-            tempUser.id=id;
-            console.log("showInfo----");
-            tempUser.username=infolist[0].value;
-            tempUser.password=infolist[1].value;
-            tempUser.sex=infolist[2].value;
-            tempUser.email=infolist[3].value;
-            tempUser.role=infolist[4].value;
-            let userdata = new FormData();
-            userdata.append('id',tempUser.id);
-            userdata.append('username',tempUser.username);
-            userdata.append('password',tempUser.password);
-            userdata.append('sex',tempUser.sex);
-            userdata.append('email',tempUser.email);
-            userdata.append('role',tempUser.role);
-            console.log(userdata);
-            updateData(userdata,"/admin/user/","提示:","用户数据更新完毕",function () {
-              _this.queryAllUser();
-            });
-
-
+          let tempWebUser=new User();
+        tempWebUser.id=id;
+          console.log("showInfo----");
+        tempWebUser.username=infolist[0].value;
+        tempWebUser.password=infolist[1].value;
+        tempWebUser.sex=infolist[2].value;
+        tempWebUser.email=infolist[3].value;
+        tempWebUser.role=infolist[4].value;
+        let userdata = new FormData();
+        userdata.append('id',tempWebUser.id);
+        userdata.append('username',tempWebUser.username);
+        userdata.append('password',tempWebUser.password);
+        userdata.append('sex',tempWebUser.sex);
+        userdata.append('email',tempWebUser.email);
+        userdata.append('role',tempWebUser.role);
+          console.log(userdata);
+          httpmethods.updateDataFuc(userdata,"/api/admin/webUser/",function () {
+            _this.showToastFuc("提示:","","用户数据更新完毕");
+            _this.closeInfoModelP();
+            _this.queryAllUserBypage();
           });
+
+
+      });
         });
 
-      },addUser: function () {
+      },
+      showmoreitem:function () {
 
-        var infolist=[];
+
+      },
+      addUser: function () {
+
+         var infolist=[];
 
         infolist.push(new Info("用户名","uername",""));
         infolist.push(new Info("密码","password",""));
@@ -406,23 +439,36 @@ export default {
         infolist.push(new Info("email","email",""));
         infolist.push(new Info("角色","role",""));
         var _this=this;
-        this.$refs.infomodal.showInfo("用户信息:",infolist,true,"确定","",function () {
+        this.showinfo("用户信息:",infolist,true,"确定","",function () {
           console.log(infolist);
 
-          var tempUser=new User();
-          tempUser.username=infolist[0].value;
-          tempUser.password=infolist[1].value;
-          tempUser.sex=infolist[2].value;
-          tempUser.email=infolist[3].value;
-          tempUser.role=infolist[4].value;
-          console.log(tempUser);
+          var tempWebUser=new User();
 
-          addData(tempUser,"/api/admin/user/","信息:","添加用户成功!",function () {
-            _this.queryAllUser();
+          tempWebUser.username=infolist[0].value;
+          tempWebUser.password=infolist[1].value;
+          tempWebUser.sex=infolist[2].value;
+          tempWebUser.email=infolist[3].value;
+          tempWebUser.role=infolist[4].value;
+
+          let userdata = new FormData();
+          userdata.append('username',tempWebUser.username);
+          userdata.append('password',tempWebUser.password);
+          userdata.append('sex',tempWebUser.sex);
+          userdata.append('email',tempWebUser.email);
+          userdata.append('role',tempWebUser.role);
+          console.log(tempWebUser);
+
+          httpmethods.addDataFuc(userdata,"/api/admin/webUser/",function () {
+            // 
+            _this.showToastFuc("信息:","","添加用户成功!");
+            _this.queryAllUserBypage();
+            
+            _this.closeInfoModelP();
           });
 
 
         });
+
 
 
 
@@ -504,7 +550,7 @@ export default {
 
       }
     },created: function () {
-      this.queryAllUser();
+      this.queryAllUserBypage();
      
       
     }, mounted:function(){

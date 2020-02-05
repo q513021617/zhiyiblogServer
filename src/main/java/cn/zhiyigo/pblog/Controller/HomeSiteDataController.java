@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/siteData")
+@RequestMapping("/api/siteData")
 public class HomeSiteDataController extends CommonSiteDataController {
     
 

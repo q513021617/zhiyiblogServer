@@ -11,7 +11,7 @@
             </li>
 
             <li class="nav-item has-treeview menu-open">
-                <a href="/admin/" class="nav-link active">首页</a>
+                <a href="/" class="nav-link active">首页</a>
             </li>
 
             <li class="nav-item d-none d-sm-inline-block">
@@ -32,7 +32,8 @@
         </form>
 
         <!-- Right navbar links -->
-
+       
+       
     </nav>
     <!-- /.navbar -->
 
@@ -41,126 +42,42 @@
         <!-- Brand Logo -->
         <a href="#" class="brand-link">
             <img src="/images/logo.gif" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
+                 style="opacity: .8;">
             <span class="brand-text font-weight-light">后台管理</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <!-- Sidebar webUser panel (optional) -->
+            <div class="webUser-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="/images/avator.jpg" class="img-circle elevation-2" alt="User Image">
+                    <img src="/images/avator.jpg" class="img-circle elevation-2" alt="User Image" width="90px" height="90px">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">我叫码云</a>
+                    <a href="#" class="d-block">{{user.username}}</a>
                 </div>
             </div>
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul id="navul" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview menu-open ">
-                       <router-link to="/home" class="nav-link">
+                   
+                    <li class="nav-item has-treeview " v-for="mitem in menulist" v-bind:key="mitem.id">
+                       <router-link :to="mitem.url" class="nav-link">
                   
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                首页
+                                {{mitem.name}}
 
                             </p>
                        </router-link>
 
                     </li>
 
-                    <li class="nav-item">
-                      <router-link to="/usermanager" class="nav-link">
                       
-                       <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                用户管理
-
-                            </p>
-                      
-                      </router-link>
-                     
-                           
-                    
-                    </li>
+              
                     <li class="nav-item has-treeview">
-                       <router-link to="/articleManage" class="nav-link">
-                   
-                            <i class="nav-icon fas fa-copy"></i>
-                            <p>
-                                文章管理
-
-
-                            </p>
-                        </router-link>
-
-                    </li>
-                    <li class="nav-item has-treeview">
-                       <router-link to="/rolemanager" class="nav-link">
-                  
-                            <i class="nav-icon fas fa-copy"></i>
-                            <p>
-                                权限管理
-
-
-                            </p>
-                           </router-link>
-
-                    </li>
-                    <li class="nav-item has-treeview">
-                       <router-link to="/menumanager" class="nav-link">
-                    
-                            <i class="nav-icon fas fa-copy"></i>
-                            <p>
-                                菜单管理
-
-
-                            </p>
-                        </router-link>
-
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <router-link to="/seomanage" class="nav-link">
-                   
-                            <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                SEO管理
-
-                            </p>
-                       </router-link>
-
-                    </li>
-                    <li class="nav-item has-treeview">
-                      <router-link to="/photomanage" class="nav-link">
-                       
-                            <i class="nav-icon fas fa-tree"></i>
-                            <p>
-                                图片管理
-                            </p>
-                       
-                      </router-link>
-
-                    </li>
-                    <li class="nav-item has-treeview">
-
-                       <router-link to="/skilltreemanage" class="nav-link">
-                       
-                            <i class="nav-icon fas fa-edit"></i>
-                            <p>
-                                技能树管理
-
-                            </p>
-                      
-                      </router-link>
-                      
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
+                         <a @click="quitlogin" class="nav-link">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
                                 退出登录
@@ -191,12 +108,68 @@
 <script>
 
 import mainfooter from '@/components/footer.vue'
+import cookieOption from '@/tools/cookie'
 
 export default {
-
+ data() {
+    return {
+            menulist:[],
+            user:{}
+    }
+    },
   components: {
     mainfooter
-  }
+  },methods:{
+       queryAllMenu:function () {
+                var _this=this;
+                $.get("/api/admin/permission/",function (data) {
+                    
+                    _this.menulist=data;
+                    _this.$forceUpdate();
+
+                });
+            },
+            quitlogin:function(){
+                    cookieOption.delCookie("userdata");
+                    location.href="/";
+            },
+            queryuserbyid:function(id){
+                    var _this=this;
+                $.get("/api/admin/webUser/"+id,function (data) {
+                    console.log("--------queryuserbyid----------");
+                    console.log(data);
+                    if(data==null || data==undefined ||data==""){
+                        _this.quitlogin();
+                        return;
+                    }
+                    _this.$store.commit('setUserinfo',data);
+                    _this.user=data;
+                    _this.$forceUpdate();
+
+                });
+            }
+  },created: function () {
+
+      var _this=this;
+      var usercookiedata = cookieOption.getCookie("userdata");
+      
+            console.log("usercookiedata");
+            console.log(usercookiedata);
+            if(usercookiedata == undefined || usercookiedata.length == 0){
+                
+                    location.href="login.html";
+            }
+            if(!(usercookiedata == undefined || usercookiedata.length == 0)){
+                
+                this.queryuserbyid(usercookiedata);
+               
+                let userobj=_this.$store.state.userinfo;
+                console.log("id: "+userobj.id+" username: "+userobj.username+" password: "+userobj.password
+                            +" phone: "+userobj.phone+" email: "+userobj.email);
+            }
+           
+            this.queryAllMenu();
+        }
 
 }
 </script>

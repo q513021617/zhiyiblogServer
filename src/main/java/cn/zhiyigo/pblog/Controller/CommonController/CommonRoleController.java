@@ -1,11 +1,8 @@
 package cn.zhiyigo.pblog.Controller.CommonController;
 
 import cn.zhiyigo.pblog.Dao.RoleDao;
-import cn.zhiyigo.pblog.Dao.UserDao;
 import cn.zhiyigo.pblog.Model.Role;
-import cn.zhiyigo.pblog.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
