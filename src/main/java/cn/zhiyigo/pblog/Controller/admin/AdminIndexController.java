@@ -33,6 +33,7 @@ public class AdminIndexController {
 
         return "admin/seomanage";
     }
+
     @RequestMapping("/admin/admin_skilltree")
     public String skilltree(Map<String,Object> map){
 

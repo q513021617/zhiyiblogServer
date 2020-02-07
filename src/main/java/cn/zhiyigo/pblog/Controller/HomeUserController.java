@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class HomeUserController {
 
     @Autowired
@@ -30,5 +31,26 @@ public class HomeUserController {
             return tempWebUser;
         }
         return null;
+    }
+
+    @PostMapping("/isExtisUser")
+    public Object isExtisUser(WebUser webUser){
+
+        WebUser tempWebUser =userDao.findByusername(webUser.getUsername());
+
+
+        if (tempWebUser != null) {
+
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @PostMapping("/register")
+    public Object userRegister(WebUser webUser){
+
+        return userDao.save(webUser);
     }
 }
