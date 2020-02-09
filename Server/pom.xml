@@ -123,6 +123,7 @@
                 <configuration>
                     <executable>true</executable>
                     <includeSystemScope>true</includeSystemScope>
+                    <mainClass>cn.zhiyigo.pblog.PblogApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
