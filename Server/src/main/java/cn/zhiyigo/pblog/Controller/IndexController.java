@@ -22,10 +22,5 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/skill")
-    public String skill(Map<String,Object> map){
-//        List<User> userList=userDao.findAll();
-//        map.put("data",userList);
-        return "skilltree";
-    }
+
 }

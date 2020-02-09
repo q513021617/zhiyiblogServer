@@ -8,9 +8,11 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>cn.zhiyigo</groupId>
     <artifactId>pblog</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
+
     <name>pblog</name>
     <description>a blog system</description>
 
@@ -19,6 +21,15 @@
     </properties>
 
 
+    <!-- omitted xml -->
+    <distributionManagement>
+        <repository>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>zhiyigo-zhiyiblogServer-1.0</id>
+            <name>1.0</name>
+            <url>https://zhiyigo-maven.pkg.coding.net/repository/zhiyiblogServer/1.0/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 
@@ -115,7 +126,10 @@
 
     </dependencies>
 
+
+
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
