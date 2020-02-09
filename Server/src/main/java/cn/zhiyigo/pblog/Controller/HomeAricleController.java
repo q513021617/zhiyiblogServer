@@ -24,4 +24,11 @@ public class HomeAricleController  {
         return articleDao.findAll(pageable);
     }
 
+
+    @GetMapping("/{id}")
+    public Article getArticleByid(@PathVariable("id")Integer id){
+
+        return  articleDao.findById(id).get();
+    }
+
 }

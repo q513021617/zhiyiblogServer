@@ -18,7 +18,8 @@ public class WebUser {
 
     @Column(name = "password")
     String password;
-
+    @Column(name = "role")
+    Integer role;
     @Column(name = "phone")
     String phone;
 //1，男  2，女
