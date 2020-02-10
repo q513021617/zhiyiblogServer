@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common/commonhead :: common_header(~{::title},~{::link})">
 
-</head>
 <body>
 
-<div id="commonnav" th:replace="common/commonnav :: adminnav"  >
 
-</div>
 <div class="row">
     <h1>技能树</h1>
 
@@ -22,7 +18,7 @@
 
 </div>
 
-<div th:replace="common/commonfooter :: myfooter"  ></div>
+
 <script>
     var myChart= echarts.init(document.getElementById('chartMain'));
     var clickcount=0;

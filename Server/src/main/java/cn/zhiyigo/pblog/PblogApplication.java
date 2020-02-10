@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 public class PblogApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(PblogApplication.class, args);
     }
 
