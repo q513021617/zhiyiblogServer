@@ -16,6 +16,7 @@
 #此项目的前端与后端完全分离
 
 前端部分====》<a href="https://github.com/q513021617/zhiyiblogWebPage">点击链接查看</a>
+后台管理前端部分====》<a href="https://github.com/q513021617/zhiyigowebadminpage">点击链接查看</a>
 
 # 博客系统需求列表
 
