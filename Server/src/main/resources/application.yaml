@@ -9,7 +9,7 @@ spring:
     url: jdbc:mysql://localhost:3306/blog?serverTimezone=UTC
     hikari: # springboot 2.0 整合了hikari ,据说这是目前性能最好的java数据库连接池
       username: blog
-      password: sY5GbaztPXZzWEwL
+      password: blog
   jpa:
     hibernate:
       ddl-auto: update  # 第一次建表create  后面用update，要不然每次重启都会新建表
