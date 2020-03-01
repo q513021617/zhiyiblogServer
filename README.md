@@ -1,10 +1,10 @@
 # zhiyiblog
 
-![PC端登录界面](http://cdn.zhiyigo.cn/QQ%E5%9B%BE%E7%89%8720200209214515.png)
+![PC端登录界面](https://github.com/q513021617/zhiyiblogServer/blob/master/01.png)
     
 
 
-![PC端后台编辑界面](http://cdn.zhiyigo.cn/blogedit.jpg)
+![PC端后台编辑界面](https://github.com/q513021617/zhiyiblogServer/blob/master/02.jpg)
  
     一款基于zhiyiCMS开发的博客系统，并且一直在线上展示。
   作为一个持续性学习web系统开发技术的技术人，为了能够坚持做一件事情，而不是三天打鱼两天晒网，或者是朝三暮四学习新技术。<br>
@@ -13,7 +13,7 @@
 
 # 架构
 
-![架构](http://cdn.zhiyigo.cn/%E6%9E%B6%E6%9E%84.png)
+![架构](https://github.com/q513021617/zhiyiblogServer/blob/master/03.png)
 
 # zhiyicms
 
