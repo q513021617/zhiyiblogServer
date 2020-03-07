@@ -1,5 +1,3 @@
-FROM tomcat:8-jre8
+FROM openjdk:8u242-jre
 
-ADD target/pblog-1.0.1-SNAPSHOT.jar /usr/local/tomcat/webapps/
-
-CMD ["java", "-jar","webapps/pblog-1.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar","target/pblog-1.0.1-SNAPSHOT.jar"]
