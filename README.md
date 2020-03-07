@@ -1,13 +1,19 @@
 # zhiyiblog
 
-![PC端登录界面](http://cdn.zhiyigo.cn/QQ%E5%9B%BE%E7%89%8720200209214515.png)
+![PC端登录界面](https://github.com/q513021617/zhiyiblogServer/blob/master/01.png)
     
-![PC端后台编辑界面](http://cdn.zhiyigo.cn/blogedit.jpg)
+
+
+![PC端后台编辑界面](https://github.com/q513021617/zhiyiblogServer/blob/master/02.jpg)
  
     一款基于zhiyiCMS开发的博客系统，并且一直在线上展示。
   作为一个持续性学习web系统开发技术的技术人，为了能够坚持做一件事情，而不是三天打鱼两天晒网，或者是朝三暮四学习新技术。<br>
 因此新建了这一个仓库，个人技术栈涉及较为广泛，从web前端到web后端（Java，python，php），从桌面端(C# WPF) 到 Java大数据开发<br>
 希望能有小伙伴能够一起来开发这一个从0开始的博客系统，希望自己能够一直坚持下去。。。。。。<br>
+
+# 架构
+
+![架构](https://github.com/q513021617/zhiyiblogServer/blob/master/03.png)
 
 # zhiyicms
 
@@ -51,6 +57,8 @@
 11,zhiyiCMS 1.0.0 完成 ---------------2020年2月5日22:13:56 <br>
 12，zhiyiblog 前台页面完成 -----------2020年2月7日22:15:22 <br>
 13， zhiyiblog 上线 -----------------2020年2月9日21:31:21 <br>
+14, zhiyiblog 管理页面 上线 -----------------2020年2月10日21:31:21 <br>
+15, zhiyiblogServer 容器化 -----------------2020年2月11日21:31:21 <br>
 # TODO LIST
 1, 博客API列表页<br>
 2,发帖机器人（简书，CSDN自动将本站文章发送出去）<br>
