@@ -19,8 +19,13 @@ public class BookMarkTagServiceImpl implements BookMarkTagService {
     BookMarkTagDao bookMarkTagDao;
 
     @Override
-    public Page<BookMarkTag> getBookMarkTags(PageRequest pageRequest) {
-        Page<BookMarkTag> articleTagDaoAll = bookMarkTagDao.findAll(pageRequest);
+    public Page<BookMarkTag> getBookMarkTags(PageRequest pageRequest,Integer userid) {
+        BookMarkTag bookMarkTag=new BookMarkTag();
+        if(userid!=null){
+            bookMarkTag.setUserId(userid);
+        }
+        Example<BookMarkTag> tagExample = Example.of(bookMarkTag);
+        Page<BookMarkTag> articleTagDaoAll = bookMarkTagDao.findAll(tagExample,pageRequest);
         return articleTagDaoAll;
     }
 

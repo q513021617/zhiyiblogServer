@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface BookMarkTagService {
 
-   Page<BookMarkTag> getBookMarkTags(PageRequest pageRequest);
+   Page<BookMarkTag> getBookMarkTags(PageRequest pageRequest,Integer userid);
 
    void addBookMarkTag(BookMarkTag bookMarkTag);
 

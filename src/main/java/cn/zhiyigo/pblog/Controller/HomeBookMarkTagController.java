@@ -20,9 +20,9 @@ public class HomeBookMarkTagController {
     private BookMarkTagService bookService;
 
     @GetMapping("/")
-    public Response getBookMarkTagList(@RequestParam("page")Integer page,@RequestParam("size")Integer size){
+    public Response getBookMarkTagList(@RequestParam("page")Integer page,@RequestParam("size")Integer size,@RequestParam(value = "userid",required = false)Integer userid){
         PageRequest pageRequest = new PageRequest(page,size);
-        Page<BookMarkTag> bookMarkTags = bookService.getBookMarkTags(pageRequest);
+        Page<BookMarkTag> bookMarkTags = bookService.getBookMarkTags(pageRequest,userid);
 
         return Response.success(bookMarkTags);
     }
