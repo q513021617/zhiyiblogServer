@@ -29,6 +29,9 @@ public class WebUser {
     @Column(name = "email")
     String email;
 
+    @Column(name = "avatar")
+    String avatar;
+
     @Column(name = "created")
     Date created;
 

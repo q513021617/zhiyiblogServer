@@ -20,7 +20,7 @@ public class HomeUserController {
     private UserDao userDao;
 
     @PostMapping("/api/login")
-    public Object userlogin(WebUser webUser){
+    public Object userlogin(@RequestBody WebUser webUser){
 
         WebUser tempWebUser =userDao.findByemail(webUser.getEmail());
 
@@ -40,7 +40,7 @@ public class HomeUserController {
     }
 
     @PostMapping("/login")
-    public Object adminlogin(WebUser webUser){
+    public Object adminlogin(@RequestBody WebUser webUser){
 
         WebUser tempWebUser =userDao.findByusername(webUser.getUsername());
 
@@ -53,7 +53,7 @@ public class HomeUserController {
     }
 
     @PostMapping("/api/isExtisUser")
-    public Object isExtisUser(WebUser webUser){
+    public Object isExtisUser(@RequestBody WebUser webUser){
 
         WebUser tempWebUser = userDao.findByemail(webUser.getEmail());
 
@@ -68,8 +68,8 @@ public class HomeUserController {
     }
 
     @PostMapping("/api/register")
-    public Object userRegister(WebUser webUser){
+    public Object userRegister(@RequestBody WebUser webUser){
 
-        return userDao.save(webUser);
+        return userDao.saveAndFlush(webUser);
     }
 }

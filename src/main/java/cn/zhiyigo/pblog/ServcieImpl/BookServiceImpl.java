@@ -27,7 +27,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookById(Integer id) {
-        return bookDao.getOne(id);
+
+        Book book =null;
+        if(bookDao.existsById(id)){
+            book = bookDao.getOne(id);
+        }
+        return book;
     }
 
     @Override

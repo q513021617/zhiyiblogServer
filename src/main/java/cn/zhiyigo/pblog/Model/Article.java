@@ -21,6 +21,7 @@ public class Article {
     String articleContent;
     @Column(name = "article_comment_id")
     Integer articleCommentId;
+
     @Column(name = "post_time")
     Timestamp postTime;
     @Column(name = "update_time")

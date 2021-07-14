@@ -4,6 +4,7 @@ import cn.zhiyigo.pblog.Model.Book;
 
 import cn.zhiyigo.pblog.Model.Response;
 import cn.zhiyigo.pblog.Servcie.BookService;
+import cn.zhiyigo.pblog.enums.ResultStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,9 @@ public class HomeBookController {
     @GetMapping("/{id}")
     public Response getBookByid(@PathVariable("id")Integer id){
         Book book = bookService.getBookById(id);
+        if(book==null){
+            return Response.failed(ResultStatusEnum.UNKOWN_ERROR,"查找的书籍不存在");
+        }
         return Response.success(book);
     }
 
