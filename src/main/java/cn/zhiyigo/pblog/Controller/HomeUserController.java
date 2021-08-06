@@ -1,23 +1,13 @@
 package cn.zhiyigo.pblog.Controller;
 
-import cn.zhiyigo.pblog.Controller.CommonController.CommonUserController;
 import cn.zhiyigo.pblog.Dao.UserDao;
 import cn.zhiyigo.pblog.Model.Response;
 import cn.zhiyigo.pblog.Model.WebUser;
 import cn.zhiyigo.pblog.Utils.JwtTokenUtils;
 import cn.zhiyigo.pblog.enums.ResultStatusEnum;
-import cn.zhiyigo.pblog.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
