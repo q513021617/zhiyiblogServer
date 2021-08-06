@@ -51,10 +51,4 @@ public class HomeUserController {
         return Response.success(webUser);
     }
 
-
-
-
-
-
-
 }

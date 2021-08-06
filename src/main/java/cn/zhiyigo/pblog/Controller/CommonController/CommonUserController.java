@@ -38,14 +38,14 @@ public class CommonUserController {
     }
 
     @PutMapping("/")
-    public WebUser updateUser(WebUser webUser){
+    public WebUser updateUser(@RequestBody WebUser webUser){
 
 
         return  userDao.save(webUser);
     }
 
     @PostMapping("/")
-    public WebUser addUser(WebUser webUser){
+    public WebUser addUser(@RequestBody WebUser webUser){
 
 
         return  userDao.save(webUser);
