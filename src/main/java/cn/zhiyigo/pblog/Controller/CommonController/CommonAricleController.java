@@ -29,7 +29,7 @@ public class CommonAricleController {
     }
 
     @PutMapping("/")
-    public Article updateArticle(Article article){
+    public Article updateArticle(@RequestBody Article article){
 
         article.setPostTime(new Timestamp(new Date().getTime()));
         article.setUpdateTime(new Timestamp(new Date().getTime()));
@@ -44,7 +44,7 @@ public class CommonAricleController {
     }
 
     @PostMapping("/")
-    public Article addArticle(Article article){
+    public Article addArticle(@RequestBody Article article){
 
         article.setPostTime(new Timestamp(new Date().getTime()));
         article.setUpdateTime(new Timestamp(new Date().getTime()));
@@ -52,7 +52,7 @@ public class CommonAricleController {
     }
 
     @DeleteMapping("/")
-    public void delOneArticle(Article article){
+    public void delOneArticle(@RequestBody Article article){
 
         articleDao.delete(article);
     }
