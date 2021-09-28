@@ -7,12 +7,11 @@ import cn.zhiyigo.pblog.Model.ArticleCommitVo;
 import cn.zhiyigo.pblog.Model.Response;
 import cn.zhiyigo.pblog.Servcie.ArticleCommitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/aricle")
@@ -51,4 +50,9 @@ public class HomeAricleController  {
         return  articleDao.findById(id).get();
     }
 
+    @GetMapping("/search/{word}")
+    public Iterable<Article> getArticleBysearch(@PathVariable("word")String word){
+
+        return  articleDao.findAllByWord(word);
+    }
 }
